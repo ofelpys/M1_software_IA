@@ -1,0 +1,91 @@
+AGENTE DE ESTABILIZAÇÃO E GOVERNANÇA DO PROJETO
+
+CONTEXTO - Projeto em andamento (brownfield). - Nova Stack principal:
+React + Spring Boot + MySQL. - Existem documentos de requisitos em
+formatos diversos (DOCX, MD, PDF). - O repositório contém uma pasta
+.specify/memory que governa o projeto. - O Spec Kit é a metodologia
+oficial (spec → plan → tasks → código).
+
+REGRAS ABSOLUTAS (NÃO NEGOCIÁVEIS) 1. A fonte de verdade é, nesta ordem:
+a) .specify/memory/constitution.md b) SPEC em specs/ c) PLAN e TASKS
+gerados pelo Spec Kit
+
+2.  Nenhuma implementação pode ocorrer fora do que estiver
+    explicitamente definido em tasks.md.
+
+3.  Este projeto é brownfield:
+
+    -   Sempre entender o AS-IS antes de propor TO-BE.
+    -   Mudança mínima segura é obrigatória.
+
+4.  É proibido:
+
+    -   Inventar requisitos, endpoints, tabelas ou regras de negócio.
+    -   Refatorar grandes áreas sem decisão explícita na SPEC.
+
+5.  Em caso de ambiguidade ou conflito:
+
+    -   NÃO DECIDA.
+    -   Registre como “Decisão Pendente” com referência ao
+        documento/origem.
+
+6.  Toda alteração relevante deve documentar impacto em:
+
+    -   Frontend (React)
+    -   Backend (Spring Boot)
+    -   Banco (MySQL)
+
+DISCIPLINA TÉCNICA - Contratos de API (OpenAPI/Swagger) são lei. - DTOs
+são obrigatórios para comunicação entre Front e Back. - Erros seguem
+padrão único: code, message, details - Validação ocorre em duas
+camadas: - Frontend (React – validação de formulário) - Backend (Spring
+Boot – Bean Validation)
+
+-   MySQL nunca é caixa-preta:
+    -   Procedures, Functions e Triggers devem ter:
+        -   Assinatura
+        -   Parâmetros
+        -   Regras de negócio
+        -   Exceções
+        -   Controle de transação
+-   Logs estruturados com correlation-id quando aplicável.
+-   Logs devem existir:
+    -   Controller
+    -   Service
+    -   Repository
+    -   Integrações externas
+
+PADRÕES DE ARQUITETURA
+
+Frontend – React Estrutura padrão: src/ components/ pages/ services/
+hooks/ routes/ models/ utils/
+
+Regras: - Não acessar API direto em components → usar services. - Models
+representam os DTOs do backend. - Toda chamada HTTP deve tratar erro. -
+Autenticação deve usar interceptor.
+
+Backend – Spring Boot Arquitetura em camadas: controller → service →
+repository → database
+
+Regras: - Controller não contém regra de negócio. - Regra de negócio
+fica no Service. - Repository apenas acesso a dados. - DTO != Entity.
+
+Banco – MySQL Regras: - Toda alteração deve ter script versionado. -
+Usar Flyway ou Liquibase. - Toda procedure deve estar documentada. - Não
+alterar tabela direto em produção.
+
+FLUXO OBRIGATÓRIO (SPEC KIT) 1. Ler e entender os documentos em
+/docs/requisitos/00-originais. 2. Normalizar requisitos em Markdown
+(01-normalizados). 3. Consolidar conflitos e dúvidas em um mapa mestre.
+4. Gerar SPEC por fluxo (Spec Kit). 5. Gerar PLAN. 6. Gerar TASKS. 7.
+Somente então implementar código.
+
+Fluxo oficial: Requisito → SPEC → PLAN → TASKS → Código → Testes →
+Deploy
+
+OBJETIVO - Reduzir falhas em produção. - Garantir aderência total aos
+requisitos do cliente. - Criar rastreabilidade real: Requisito → Spec →
+Task → Código. - Aumentar acurácia, previsibilidade e segurança técnica.
+
+REGRA FINAL Se não está na SPEC → não existe. Se não está no PLAN → não
+sabemos como fazer. Se não está no TASKS → não pode implementar.
