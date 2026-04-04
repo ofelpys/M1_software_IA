@@ -22,6 +22,8 @@
 │   ├── context-index.md           (Tags e índices)
 │   ├── decision-log.md            (Histórico de decisões)
 │   ├── project-state.md           (Snapshot atual)
+│   ├── duv-resolutions.md         (DUVs resolvidas + evidência)
+│   ├── fase-2-completion-summary.md (Checkpoint Fase 2)
 │   └── README.md
 │
 ├── workflows/                     ← Procedures
@@ -36,8 +38,7 @@
 │   └── README.md
 │
 └── logs/                          ← Histórico
-    ├── task-log-2026-04-01.md     (Diário de execução)
-    ├── task-log-2026-04-02.md
+    ├── task-log.md                (Sessions #1, #2, etc — Diário consolidado)
     └── README.md
 ```
 
@@ -120,6 +121,20 @@ Quando **Copilot** é acionado numa sessão nova:
 - O que está em progresso
 - O que falta
 - Próxim milestone
+
+### `.copilot/memory/duv-resolutions.md` (NOVO - Fase 2)
+- Todas as 8 DUVs (Dúvidas) resolvidas
+- Data de resolução
+- Quem decidiu
+- Impacto na especificação
+- Evidência/rationale
+
+### `.copilot/memory/fase-2-completion-summary.md` (NOVO - Fase 2)
+- Checkpoint de conclusão de Fase 2
+- Métrica final: 70 RFs, 37.550 linhas
+- Bloqueadores resolvidos: ZERO
+- Status de cada SPEC
+- Próximos passos (dev team start)
 
 ### `.copilot/memory/context-index.md`
 - Tags para navegação rápida

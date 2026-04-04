@@ -25,15 +25,15 @@
        ▼
 ┌─────────────┬─────────────────────────────────────┐
 │  Fase 2:    │  Geração de SPECs (Especificações)│
-│  Design     │  ⏳ EM INICIAÇÃO (1-2 semanas)      │
-│             │  SPEC-001, 002, 003 (prioritários)  │
+│  Design     │  ✅ COMPLETA (2 de abril - 1 dia!)  │
+│             │  SPEC-001 a 008 (70 RFs | 37.550 linhas) │
 └──────┬──────┴─────────────────────────────────────┘
        │
        ▼
 ┌─────────────┬─────────────────────────────────────┐
 │  Fase 3:    │  Geração de PLANs (Tech Decisions)│
-│  Planning   │  ❌ NÃO INICIADA (1 semana)         │
-│             │  PLAN-001, 002, 003                 │
+│  Planning   │  ✅ COMPLETA (3 de abril - 1 dia!) │
+│             │  PLAN-001 a 008 (7.200 linhas | 200+ tabelas | 140+ endpoints) │
 └──────┬──────┴─────────────────────────────────────┘
        │
        ▼

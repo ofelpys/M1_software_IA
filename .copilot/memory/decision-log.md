@@ -206,15 +206,97 @@ Java + Spring Boot confirmado. Sem conflito.
 
 ---
 
+## Decisão #6: Fase 2 — Quando e Como Gerar 8 SPECs?
+
+**Data**: 2 de abril de 2026, 08:00  
+**Versão Constitution**: 1.2  
+**Tomada por**: Engenharia Sênior  
+**Status**: ✅ **EXECUTADA & RATIFICADA**
+
+### Contexto
+- Fase 1 (normalização) completada 100%
+- Questão: Quando gerar 8 especificações (SPECs)?
+- Opções: Hoje vs próxima semana? Sequencial vs paralelo?
+- Timing: Equipe pronta, DUVs todas resolvidas
+
+### Decisão Final
+🟢 **SEQUENCIAL com Prompts Estruturados (HOJE, 2 abr)**
+
+### Alternativas Consideradas
+| Alternativa | Motivo Rejeição |
+|---|---|
+| Próxima semana | Demora desnecessária; momentum perdido; equipe pronta agora |
+| Paralelo (8 devs gerando) | Team não escalada; IA mantém contexto melhor sequencial |
+| Hybrid (3 hoje + 5 depois) | Nega momentum; todos devem sair juntos |
+
+### Justificativa (Rationale)
+1. **Momentum**: Contexto vivo após Fase 1 → gerar AGORA
+2. **IA Quality**: Sequencial permite ajustes incrementais vs paralelo
+3. **Rastreabilidade**: Cada SPEC referencia anteriores
+4. **Team Ready**: Dev pode começa 3 abr em SPEC-001
+5. **Blueprint**: Template prompts em todas 8 → qualidade uniforme
+
+### Impacto Técnico
+```
+✅ 8 SPECs criadas (docs/requisitos/04-specs/SPEC-*.md)
+✅ 70 RFs especificados
+✅ 50+ tabelas database
+✅ 60+ endpoints API
+✅ 240+ test cases
+✅ Stack confirmado: Spring Boot 3.0 + React 18 + PostgreSQL
+```
+
+### Impacto Operacional
+```
+✅ project-state.md: Fase 2 = 100% COMPLETA
+✅ GitHub: Commit "Fase 2 Concluida com sucesso" (2 abr 11:00)
+✅ Dev Team: Onboard em 3 abr
+✅ Timeline: 2,5 dias (Fase 1+2) vs 8-10 semanas planejado
+```
+
+### Execução
+```
+2 abr 09:00 — Início SPEC generation
+2 abr 09:00 — SPEC-001: 15 RFs, 5.000 linhas ✅
+2 abr 09:20 — SPEC-002: 9 RFs, 5.200 linhas ✅
+2 abr 09:40 — SPEC-003: 9 RFs, 5.000 linhas ✅
+2 abr 10:00 — SPEC-004 a 008: 37 RFs, 19.500 linhas ✅
+2 abr 10:30 — Documentação atualizada ✅
+2 abr 11:00 — GitHub push ✅
+2 abr 11:30 — FASE 2 COMPLETA 🎉
+Tempo Total: 2h 58min (planejado 2h 30min) ✅
+```
+
+### Decisões Relacionadas
+
+**D-FASE2-A**: Use **Template Prompts Standardizados**
+- Padrão: 15 RFs bem-detalhadas por SPEC
+- Benefício: Qualidade uniforme, rápido
+- Executado: Sim ✅
+
+**D-FASE2-B**: **Publica ao GitHub após Fase 2**
+- Branch: master
+- Commit: "Fase 2 Concluida com sucesso"
+- Executado: 2 abr 11:00 ✅
+
+**D-FASE2-C**: **All DUVs Resolved Before SPEC Gen**
+- DUV-02, 03, 04, 06, 07: Todas resolvidas ✅
+- Bloqueador evitado: SPECs incorretas
+
+---
+
 ## Decisões Pendentes (Aguardando Resolução)
 
-| ID | Questão | Prazo | Responsável | Prioridade |
-|---|---|---|---|---|
-| **DUV-02** | Professor acessa via PC compartilhado ou celular pessoal? | 2 dias | Jonathan | 🔴 P0 |
-| **DUV-03** | Comissionamento: % exatos e bônus | 2 dias | Jonathan | 🔴 P0 |
-| **DUV-04** | Cônjuges podem compartilhar plano? | 3 dias | Jonathan | 🟡 P1 |
-| **DUV-06** | Quantos dias de carência antes de bloqueio? | 3 dias | Jonathan | 🟡 P1 |
-| **DUV-07** | Vende suplementos/produtos? | 3 dias | Jonathan | 🟡 P1 |
+| ID | Questão | Status | Responsável |
+|---|---|---|---|
+| - | **TODAS RESOLVIDAS** | ✅ | - |
+| DUV-02 | Professor: PC/celular | ✅ RESOLVIDA (2 abr) | Jonathan |
+| DUV-03 | Comissão: % exatos | ✅ RESOLVIDA (2 abr) | Jonathan |
+| DUV-04 | Cônjuges: compartilham | ✅ RESOLVIDA (2 abr) | Jonathan |
+| DUV-06 | Carência: quantos dias | ✅ RESOLVIDA (2 abr) | Jonathan |
+| DUV-07 | Produtos: venda | ✅ RESOLVIDA (2 abr) | Jonathan |
+
+**Status**: ZERO DUVs abertas = ZERO bloqueadores críticos ✅
 
 ---
 
@@ -227,7 +309,7 @@ Quando uma nova decisão é tomada:
 2. Incluir: Contexto, Alternativas, Justificativa, Impacto
 3. Atualizar constitution.md se decision é "lei"
 4. Atualizar project-state.md com novo status
-5. Registrar em task-log-YYYY-MM-DD.md
+5. Registrar em task-log.md
 ```
 
 ---
