@@ -1,15 +1,15 @@
 # CONTRIBUTING — Processo de Pull Request 🚀
 
-> **Versão**: 1.0  
-> **Data**: 2 de abril de 2026  
+> **Versão**: 1.1  
+> **Data**: 3 de abril de 2026 (Fase 3 Planning Completa)  
 > **Aplicação**: OBRIGATÓRIO para todas as PRs  
-> **Referência**: [Guia de Padrões de Código](docs/requisitos/00-originais/guia-padroes-codigo-convencoes.md)
+> **Referência**: [Guia de Padrões de Código](docs/requisitos/00-originais/guia-padroes-codigo-convencoes.md) | [PLANs (8 módulos)](docs/requisitos/05-plans/)
 
 ---
 
 ## 🎯 O que é Processo de PR?
 
-**Pull Request (PR)** é um **fluxo controlado de revisão de código** antes de mergear mudanças para `main`. Garante:
+**Pull Request (PR)** é um **fluxo controlado de revisão de código** antes de mergear mudanças para `main`. Este processo garante rastreabilidade **100% do RF ao Código** (RF → SPEC → PLAN → PR → Code). Garante:
 
 1. ✅ **Qualidade de Código**: Segue padrões (Guia de Padrões)
 2. ✅ **Sem Bugs Óbvios**: Code Review por pelo menos 1 dev
@@ -20,8 +20,9 @@
 **Benefícios**:
 - Compartilha conhecimento (2+ pessoas veem o código)
 - Previne bugs antes de ir para PROD
-- Rastreabilidade completa (quem mudou quê, quando, por quê)
+- Rastreabilidade COMPLETA: RF → SPEC → PLAN → PR → Code (quem mudou quê, quando, por quê, qual requisito)
 - Rollback fácil se problema é detectado
+- Governança: Todas decisões (constitution.md), padrões (patterns.md) e planos (8 PLANs Fase 3) respeitados
 
 ---
 
@@ -42,24 +43,80 @@ git checkout -b bugfix/corrigir-validacao-cpf
 git checkout -b docs/adicionar-exemplos-api
 ```
 
-**Convenção de Branch**:
+**Convenção de Branch** (vinculado aos 8 PLANs da Fase 3):
 ```
-feature/[MODULO]-[descripcion-curta]
-bugfix/[MODULO]-[descripcion-curta]
-docs/[descripcion-curta]
-refactor/[MODULO]-[descripcion-curta]
+feature/PLAN-[001-008]-[modulo]-[descricao-curta]
+bugfix/PLAN-[001-008]-[modulo]-[descricao-curta]
+docs/PLAN-[001-008]-[descricao-curta]
+refactor/PLAN-[001-008]-[modulo]-[descricao-curta]
 ```
 
 Examples:
-- `feature/M02-login-jwt` ✅
-- `bugfix/M03-error-handling` ✅
-- `docs/readme-update` ✅
-- `myfeature` ❌ (sem contexto)
-- `feature/auth` ❌ (genérico)
+- `feature/PLAN-001-cadastro-validacao-aluno` ✅ (rastreável a PLAN-001 Cadastro & Acesso)
+- `bugfix/PLAN-002-financeiro-juros-calculo` ✅ (rastreável a PLAN-002 Financeiro)
+- `feature/PLAN-003-relatorios-filtro-datas` ✅ (rastreável a PLAN-003 Relatórios & Dashboards)
+- `feature/PLAN-004-avaliacao-teste-fisico` ✅ (rastreável a PLAN-004 Avaliação & Evolução)
+- `docs/PLAN-001-api-endpoints-update` ✅
+- `myfeature` ❌ (sem contexto ou PLAN)
+- `feature/auth` ❌ (genérico, sem PLAN reference)
+
+## 🔗 Rastreabilidade: RF → SPEC → PLAN → PR → Code
+
+Este projeto segue rastreabilidade **100% do RF ao Código**:
+
+```
+Fase 1 (Analysis)
+  70 RFs (Requisitos Funcionais) documentados
+      ↓
+Fase 2 (Design)
+  8 SPECs (1 por módulo)
+  - SPEC-001: Cadastro & Acesso (15 RFs)
+  - SPEC-002: Financeiro (9 RFs)
+  - SPEC-003: Relatórios & Dashboards (9 RFs)
+  - SPEC-004: Avaliação & Evolução (8 RFs)
+  - SPEC-005: Professores (8 RFs)
+  - SPEC-006: Equipamento & Salas (8 RFs)
+  - SPEC-007: Insumos & Produtos (8 RFs)
+  - SPEC-008: Comunicação & Notificações (5 RFs)
+      ↓
+Fase 3 (Planning) ← VOCÊ ESTÁ AQUI
+  8 PLANs (1 por SPEC)
+  - PLAN-001: Cadastro & Acesso (1.200 linhas | 12 tabelas | 24 endpoints)
+  - PLAN-002: Financeiro (900 linhas | 5 tabelas | 18 endpoints)
+  - PLAN-003: Relatórios & Dashboards (700 linhas | 5 VIEWs | 12 endpoints)
+  - PLAN-004: Avaliação & Evolução (500 linhas | 4 tabelas | 12 endpoints)
+  - PLAN-005: Professores (600 linhas | 5 tabelas | 14 endpoints)
+  - PLAN-006: Equipamento & Salas (500 linhas | 4 tabelas | 12 endpoints)
+  - PLAN-007: Insumos & Produtos (600 linhas | 5 tabelas | 14 endpoints)
+  - PLAN-008: Comunicação & Notificações (400 linhas | 4 tabelas | 10 endpoints)
+      ↓
+Fase 4 (Prototyping)
+  HTML/CSS mockups + React stubs
+      ↓
+Fase 5 (Development)
+  PRs com referência a PLAN-XXX → Java/React code implementaçao
+      ↓
+PRODUCTION CODE
+```
+
+**Ao abrir PR, SEMPRE referencie qual RF → SPEC → PLAN está implementando!**
+
+Exemplo:
+```
+feat(PLAN-002-Financeiro): Implementar cálculo de juros automático
+
+RF-FIN-03: Alunos com pagamento atrasado acumulam juros
+SPEC-002: Seção 4.2 - Cálculo de juros (0.05% ao dia = 1.5% mensal)
+PLAN-002: Database (tabela INADIMPLENCIA, trigger calcular_juros_automatico)
+
+Implementação:
+- Trigger PostgreSQL: calcular_juros_automatico()
+- Endpoint REST: POST /api/inadimplencia/calcular-juros
+- Service: InadimplenciaService.calcularJuros()
+- Tests: 12 unit tests (cobertura 100%)
+```
 
 ---
-
-### 2️⃣ Desenvolvimento + Commits
 
 **Enquanto você desenvolver**:
 
@@ -75,15 +132,18 @@ git status
 git add src/main/java/com/forcatotal/AlunoService.java
 git add src/main/js/AlunoForm.jsx
 
-# Commit com mensagem clara (ver seção 2.1 abaixo)
-git commit -m "feat(M02-Autenticacao): Implementar validacao JWT 5min expiacao
+# Commit com mensagem clara referenciando o PLAN da Fase 3
+# IMPORTANTE: Cada commit deve referenciar qual PLAN estar implementando
+git commit -m "feat(PLAN-001-Autenticacao): Implementar validacao JWT 5min expiacao
 
-- Adicionar filter de autenticaco JWT
-- Validar token em cada request
-- Larcar InvalidTokenException se expirado
+- Adicionar Spring Security filter conforme PLAN-001 (12 tabelas, 24 endpoints, 5 React pages)
+- Validar token em cada request com HS256
+- Lançar InvalidTokenException se expirado (como especificado em PLAN-001)
+- Implementar rotação de refresh tokens (30 dias)
 - Cobertura de teste: 95% de linhas
 
-Ref: RF-ACE-02, RNF-03, RNF-13"
+Ref: PLAN-001, RF-ACE-02, RNF-03, RNF-13
+Link PLAN: docs/requisitos/05-plans/PLAN-001-cadastro-acesso.md"
 
 # Push para origin
 git push origin feature/M02-login-jwt
@@ -100,11 +160,11 @@ git push origin feature/M02-login-jwt
 ```
 
 **Tipos permitidos**:
-- `feat`: Nova funcionalidade
-- `fix`: Correção de bug
+- `feat`: Nova funcionalidade (necessário referenciar PLAN-XXX)
+- `fix`: Correção de bug (necessário referenciar PLAN-XXX)
 - `refactor`: Reorganização sem mudança de comportamento
 - `docs`: Documentação apenas
-- `test`: Testes apenas
+- `test`: Testes apenas (associar ao PLAN-XXX sendo testado)
 - `chore`: Dependências, config, build
 
 **Exemplos validos** ✅:
@@ -576,21 +636,59 @@ jobs:
 | [Matriz Rastreabilidade](docs/requisitos/02-mapa/matriz-rastreabilidade.md) | RFs → Módulos → Tabelas |
 | [RNFs Detalhados](docs/requisitos/02-mapa/requisitos-nao-funcionais-detalhados.md) | Critério aceitação, stack tech |
 | [Modelo Dados](docs/requisitos/02-mapa/modelo-dados-conceitual.md) | Schema, relacionamentos, triggers |
+| **[PLAN-001: Cadastro & Acesso](docs/requisitos/05-plans/PLAN-001-cadastro-acesso.md)** | **12 tabelas \| 24 endpoints \| 5 React pages** |
+| **[PLAN-002: Financeiro](docs/requisitos/05-plans/PLAN-002-financeiro.md)** | **5 tabelas \| 18 endpoints \| Comissão automática** |
+| **[PLAN-003: Relatórios & Dashboards](docs/requisitos/05-plans/PLAN-003-relatorios-dashboards.md)** | **5 VIEWs \| 12 endpoints \| Dashboard KPIs** |
+| **[PLAN-004: Avaliação & Evolução](docs/requisitos/05-plans/PLAN-004-avaliacao-evolucao.md)** | **4 tabelas \| 12 endpoints \| Certificados** |
+| **[PLAN-005: Professores](docs/requisitos/05-plans/PLAN-005-professores.md)** | **5 tabelas \| 14 endpoints \| Performance ranking** |
+| **[PLAN-006: Equipamento & Salas](docs/requisitos/05-plans/PLAN-006-equipamento-salas.md)** | **4 tabelas \| 12 endpoints \| Manutenção** |
+| **[PLAN-007: Insumos & Produtos](docs/requisitos/05-plans/PLAN-007-insumos-produtos.md)** | **5 tabelas \| 14 endpoints \| Controle validade** |
+| **[PLAN-008: Comunicação & Notificações](docs/requisitos/05-plans/PLAN-008-comunicacao-notificacoes.md)** | **4 tabelas \| 10 endpoints \| Multi-channel** |
+| [.copilot/memory/constitution.md](.copilot/memory/constitution.md) | Decisões supremas imutáveis |
+| [.copilot/core/patterns.md](.copilot/core/patterns.md) | 9 padrões code copy-paste ready |
+| [.copilot/core/rules.md](.copilot/core/rules.md) | 13 regras de execução (law enforcement) |
 
 ---
 
-## 📞 Suporte
+## 🎯 Desenvolvimento em Paralelo com 8 PLANs (Fase 3 Completa)
 
-Dúvidas sobre processo de PR?
+Agora que Fase 3 está completa, o desenvolvimento será estruturado com **8 developers trabalhando em paralelo**, cada um com seu PLAN:
 
-1. Ver exemplos em PRs anteriores (GitHub)
-2. Consultar Guia de Padrões
-3. Contatar Tech Lead
-4. Abrir Issue em GitHub
+| Dev | PLAN | Tabelas | Endpoints | React Pages | Duração |
+|-----|------|---------|-----------|------------|---------|
+| Dev 1 | PLAN-001 Cadastro & Acesso | 12 | 24 | 5 | 2 semanas |
+| Dev 2 | PLAN-002 Financeiro | 5 | 18 | 4 | 2 semanas |
+| Dev 3 | PLAN-003 Relatórios & Dashboards | 5 VIEWs | 12 | 6 | 2 semanas |
+| Dev 4 | PLAN-004 Avaliação & Evolução | 4 | 12 | 4 | 1.5 semanas |
+| Dev 5 | PLAN-005 Professores | 5 | 14 | 4 | 1.5 semanas |
+| Dev 6 | PLAN-006 Equipamento & Salas | 4 | 12 | 3 | 1.5 semanas |
+| Dev 7 | PLAN-007 Insumos & Produtos | 5 | 14 | 4 | 1.5 semanas |
+| Dev 8 | PLAN-008 Comunicação & Notificações | 4 | 10 | 3 | 1.5 semanas |
+
+**Dependências Críticas**:
+- PLAN-001 (Cadastro) → bloqueador para PLAN-002 e PLAN-005 (usam dados de alunos/professores)
+- PLAN-002 (Financeiro) → bloqueador para PLAN-003 (relatórios exigem dados financeiros)
+- Recomendação: Priority → PLAN-001 (Dev 1 começa primeiro)
+
+**Branch Organization**:
+```bash
+# Cada dev abre branch relacionado ao SEU PLAN
+git checkout -b feature/PLAN-001-cadastro-validacao-cpf
+git checkout -b feature/PLAN-002-financeiro-calculo-juros
+git checkout -b feature/PLAN-003-relatorios-dashboard-kpis
+# ... etc para PLAN-004 a PLAN-008
+```
+
+**Review Strategy**:
+- Backend PRs: Revisado por dev sênior Java + arquiteto
+- Frontend PRs: Revisado por dev sênior React + UX
+- Database PRs: Revisado por DBA (índices, migrations, triggers)
+- Cross-PLAN: Se afeta múltiplos PLANs, approval de ambos devs
 
 ---
 
-**Last Updated**: 2 de abril de 2026  
-**Owner**: Tech Lead  
-**Status**: 🟢 Active — All PRs must follow this process
+**Last Updated**: 3 de abril de 2026 (Fase 3 Planning Completa)  
+**Owner**: Tech Lead + Felipe Costa Monteiro  
+**Status**: 🟢 Active — Processamento de PRs com rastreabilidade RF→SPEC→PLAN→Code  
+**Próximo**: Fase 4 Prototyping (5-7 abr) + Fase 5 Development (8 módulos em paralelo)
 
