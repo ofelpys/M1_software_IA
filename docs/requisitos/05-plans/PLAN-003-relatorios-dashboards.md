@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-003-relatorios-dashboards.md  
 > **RFs Cobertas**: RF-REL-01 a 09 (9 RFs)  
+> **Rastreabilidade Explícita**: RF-REL-01, RF-REL-02, RF-REL-03, RF-REL-04, RF-REL-05, RF-REL-06, RF-REL-07, RF-REL-08, RF-REL-09  
 > **Tempo Estimado**: 6 horas
 
 ---

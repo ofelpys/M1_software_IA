@@ -66,25 +66,22 @@ Não. Mas exigiria:
 **Data**: 1 de abril de 2026  
 **Versão Constitution**: 1.0  
 **Tomada por**: Engenharia Sênior (recomendação)  
-**Status**: ⏳ **AGUARDANDO RATIFICAÇÃO DE JONATHAN**
+**Status**: ✅ **RATIFICADA (2 abr 2026)**
 
 ### Contexto
 - Ambiguidade: Por aula? Por aluno? Por plano? Combinação?
 - RF-PROF-04 a RF-PROF-07 bloqueadas
 - Risco: Erro de cálculo → Fraude ou insatisfação de professor
 
-### Decisão Proposta
-🟠 **MODELO HÍBRIDO**
+### Decisão Final
+🟢 **MODELO POR ALUNO MENSAL**
 
 ```
-Comissão Mensal = (A) + (B) + (C)
+Comissão Mensal = Alunos_Ativos × VLA × Percentual
 
 Onde:
-(A) = 70% da receita das aulas ministradas
-(B) = 5% de cada novo aluno captado pelo professor
-(C) = Bônus de desempenho (configurável)
-     └─ Se frequência ≥ 95% → +10% do mês
-     └─ Se novos alunos ≥ meta → +5% do mês
+VLA = Valor do plano / 30
+Percentual = configurável por professor/política
 ```
 
 ### Alternativas Consideradas
@@ -93,18 +90,18 @@ Onde:
 | **A) Por Aula** | Simples, transparente | Não incentiva venda/novos alunos | Parcial (adotado em A) |
 | **B) Por Aluno** | Incentiva crescimento | Não recompensa execução | Parcial (adotado em B) |
 | **C) Por Plano** | Alinha com receita | Complicado, pouco usado | Não adotado |
-| **D) Híbrido** | Equilibra ambos | Mais complexo, mais configurações | ✅ **PROPOSTO** |
+| **D) Híbrido** | Equilibra ambos | Mais complexo, mais configurações | Não adotado |
 
-### Justificativa do Modelo Híbrido
-1. **Parte A (70% aula)**: Recompensa o professor que *executa* bem (recorrência, satisfação aluno)
-2. **Parte B (5% novo)**: Incentiva *venda* (crescimento, receita nova)
-3. **Parte C (bônus)**: Motiva *excellence* (qualidade, retenção)
+### Justificativa do Modelo por Aluno Mensal
+1. Simplicidade operacional para fechamento mensal
+2. Transparência para professor e financeiro
+3. Menor risco de divergência de cálculo na fase inicial
 
 ### Impacto Técnico
 ```
 RF-PROF-04: Service → calcularComissaoMensal()
   Input: professor_id, mes
-  Process: SUM(aulas * % receita) + COUNT(new_alunos) * 0.05 + bônus
+  Process: alunos_ativos * VLA * percentual
   Output: comissao_mensal, detalhamento
 
 RF-PROF-05: Controller GET /professores/{id}/comissao-prevista
@@ -122,11 +119,9 @@ Testes: 100% cobertura de cenários (aula, novos, bônus combinado)
 ```
 
 ### Próximos Passos
-1. ⏳ Jonathan confirma modelo
-2. ⏳ Jonathan define % exatos
-3. ⏳ Jonathan define bônus (valor/critério)
-4. ✅ Converter para SPEC-PROF-001
-5. ✅ Implementar RF-PROF-04 a 07
+1. ✅ Jonathan confirmou modelo (2 abr)
+2. ✅ Modelo refletido em SPECs/PLANs
+3. ✅ RF-PROF-04 a 07 destravadas
 
 ---
 
@@ -285,7 +280,7 @@ Tempo Total: 2h 58min (planejado 2h 30min) ✅
 
 ---
 
-## Decisões Pendentes (Aguardando Resolução)
+## Decisões (Todas Resolvidas)
 
 | ID | Questão | Status | Responsável |
 |---|---|---|---|
@@ -297,6 +292,46 @@ Tempo Total: 2h 58min (planejado 2h 30min) ✅
 | DUV-07 | Produtos: venda | ✅ RESOLVIDA (2 abr) | Jonathan |
 
 **Status**: ZERO DUVs abertas = ZERO bloqueadores críticos ✅
+
+---
+
+## Decisão #7: Padrão Visual Fase 4 — Industrial/Iron
+
+**Data**: 4 de abril de 2026  
+**Tomada por**: Produto + Engenharia (execução Copilot)  
+**Status**: ✅ **EXECUTADA**
+
+### Contexto
+- Início da Fase 4 (prototipagem)
+- Necessidade de linguagem visual consistente para dashboards e formulários
+- Objetivo: evitar UI genérica e garantir identidade forte do produto
+
+### Decisão Final
+🟥 **Tema industrial/iron, escuro e funcional**
+
+### Diretrizes ratificadas
+1. Tipografia: Barlow Condensed (headlines), Barlow (texto e dados)
+2. Base de cor: #0D0D0D a #2E2E2E
+3. Cor primária de ação: #E8251F
+4. Sem gradientes coloridos
+5. Grid: 12 colunas com gap de 8px
+
+### Componentes obrigatórios no protótipo
+- Cartão de métrica com barra de 4px no topo
+- Avatar com dot de presença
+- Badge de status (ativo, inadimplente, trial, premium, plano)
+- Tabela compacta com hover sutil
+- Input com estado de erro
+- Barra de progresso de ocupação
+- Sidebar com preview de dashboard
+
+### Evidência de execução
+```
+docs/requisitos/06-prototipos/fase-4-iron/index.html
+docs/requisitos/06-prototipos/fase-4-iron/styles.css
+docs/requisitos/06-prototipos/fase-4-iron/app.js
+docs/requisitos/06-prototipos/fase-4-iron/README.md
+```
 
 ---
 

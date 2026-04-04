@@ -1,9 +1,9 @@
 # Matriz de Rastreabilidade: Requisitos → Módulos → Tabelas
 
-> **Versão**: 1.0  
-> **Data**: 2 de abril de 2026  
-> **Propósito**: Mapear cada Requisito Funcional (RF) → Módulo → Tabelas impactadas + DUVidas  
-> **Uso**: Validar cobertura completa, identificar impactos, preparar SPECS
+> **Versão**: 1.1  
+> **Data**: 4 de abril de 2026  
+> **Propósito**: Mapear cada Requisito Funcional (RF) → Módulo → Tabelas impactadas + status de decisão  
+> **Uso**: Validar cobertura completa, identificar impactos, alinhar SPECs e PLANs
 
 ---
 
@@ -41,7 +41,7 @@
 |---|---|---|---|---|---|
 | **RF-ACE-01** | Registrar check-in do aluno na unidade | M02 | `checkin_log` (data, hora, academia, aluno, status_resultado) | — | ✅ Claro |
 | **RF-ACE-02** | Permitir consultar status de aluno em tempo real na recepção | M02 | `aluno`, `matricula`, `matricula_status`, `checkin_log` (para histórico) | — | ✅ Claro |
-| **RF-ACE-03** | Bloquear automaticamente acesso de aluno inadimplente após X dias de atraso (configurável) | M02 | `config_parametro` (dias_carencia), `matricula_status`, `checkin_log` | **DUV-06** | ⏳ Aberto |
+| **RF-ACE-03** | Bloquear automaticamente acesso de aluno inadimplente após 3 dias de atraso (configurável) | M02 | `config_parametro` (dias_carencia), `matricula_status`, `checkin_log` | — | ✅ Claro |
 | **RF-ACE-04** | Registrar motivo de bloqueio (inadimplência, suspensão, cancelamento) | M02 | `matricula_bloqueio` (motivo_enum, data_bloqueio, responsavel) | — | ✅ Claro |
 | **RF-ACE-05** | Permitir desbloqueio manual por coordenador/proprietário com registro | M02 | `matricula_bloqueio` (desbloqueado_em, desbloqueado_por, motivo_desbloqueio) | — | ✅ Claro |
 | **RF-ACE-06** | Fornecer relatório de acesso por período (ex: 30 dias) | M02 | `checkin_log` (query com date range) | — | ✅ Claro |
@@ -61,7 +61,7 @@
 | **RF-FIN-06** | Registrar todas formas de pagamento: dinheiro, débito, crédito, PIX | M03 | `forma_pagamento` (enum: DINHEIRO, CARTAO_DEBITO, CARTAO_CREDITO, PIX) | — | ✅ Claro |
 | **RF-FIN-07** | Permitir parcelamento de atrasos via análise de caso com autorização | M03 | `plano_pagamento_atraso` (parcelamento_em_n, condicoes, autorizado_por, data_autorizacao) | — | ✅ Claro |
 | **RF-FIN-08** | Fornecer relatório fluxo de caixa por período | M03 | `pagamento` (query: entrada, saída, saldo acumulado) | — | ✅ Claro |
-| **RF-FIN-09** | Integrar dados de receita por professor para cálculo de comissão | M03 | `pagamento` (origem: MENSALIDADE, AULA_EXTRA, PLANO_PREMIUM), `professor_lucratividade` (view: total_aulas × valor + mensalidades vinculadas) | **DUV-03** | ⏳ Aberto |
+| **RF-FIN-09** | Integrar dados de receita por professor para cálculo de comissão por aluno mensal | M03 | `pagamento` (origem: MENSALIDADE), `comissao_calculo` (alunos_ativos × VLA × percentual) | — | ✅ Claro |
 
 ---
 
@@ -87,11 +87,11 @@
 | **RF-PROF-01** | Criar agenda de aulas: data, hora, local (academia), modalidade | M05 | `aula` (data, hora_inicio, hora_fim, academia_id, modalidade_enum, professor_id), `sala_aula` | — | ✅ Claro |
 | **RF-PROF-02** | Associar alunos a professor (aulas privadas, grupos) | M05 | `matricula_professor` (aluno_id, professor_id, tipo_enum: PRIVADO, GRUPO, AULA_COLETIVA), `aula_aluno` (junction) | — | ✅ Claro |
 | **RF-PROF-03** | Registrar presença confirmada do professor em cada aula | M05 | `aula_presenca` (professor_id, aula_id, presente_sim_nao, data_registro, responsavel_confirmou) | — | ✅ Claro |
-| **RF-PROF-04** | Calcular comissão por aula ministrada (% configurável por tipo) | M05 | `config_comissao` (tipo_aula_enum, percentual_comissao), `comissao_calculo` (aula_id, professor_id, valor_base, percentual, valor_comissao, mes_referencia) | **DUV-03** | 🔴 **CRÍTICO** |
-| **RF-PROF-05** | Fornecer pré-visualização de comissão ao professor (ganho estimado) | M05 | `comissao_calculo` (query: soma mensal por professor, mostra estimativa) | **DUV-03** | ⏳ Aberto |
+| **RF-PROF-04** | Calcular comissão por aluno ativo no mês (% configurável) | M05 | `config_comissao` (percentual_comissao), `comissao_calculo` (professor_id, periodo_mes, total_alunos_ativos, valor_total) | — | ✅ Claro |
+| **RF-PROF-05** | Fornecer pré-visualização de comissão ao professor (ganho estimado) | M05 | `comissao_calculo` (query: soma mensal por professor, mostra estimativa) | — | ✅ Claro |
 | **RF-PROF-06** | Registrar bônus de desempenho (opcional, por unidade) | M05 | `professor_bonus` (professor_id, academia_id, mes_referencia, valor_bonus, criterio, autorizado_por) | — | ✅ Claro |
-| **RF-PROF-07** | Gerar relatório de comissão mensal por professor com detalhamento de aulas | M05 | `comissao_calculo` (query: JOIN aula, professor, detalhamento de cálculo) | **DUV-03** | ⏳ Aberto |
-| **RF-PROF-08** | Permitir designar professor responsável por avaliações físicas (perfil/permissão) | M05 | `professor_permissao` (tipo_enum: AVALIADOR, INSTRUTOR, GESTOR_TURMA), `avaliacao_fisica` (professor_id com validate permissão) | **DUV-09** | ⏳ Aberto |
+| **RF-PROF-07** | Gerar relatório de comissão mensal por professor com detalhamento do cálculo | M05 | `comissao_calculo` (query: JOIN professor, detalhamento de cálculo) | — | ✅ Claro |
+| **RF-PROF-08** | Permitir designar professor responsável por avaliações físicas (perfil/permissão) | M05 | `professor_permissao` (tipo_enum: AVALIADOR, INSTRUTOR, GESTOR_TURMA), `avaliacao_fisica` (professor_id com validate permissão) | — | ✅ Claro |
 
 ---
 
@@ -120,9 +120,24 @@
 | **RF-REL-04** | Gerar relatório de cancelamentos com motivo e período | M07 | `matricula_cancelamento` (data_cancelamento, motivo_enum, academia_id) | — | ✅ Claro |
 | **RF-REL-05** | Gerar relatório de receita vs inadimplência por unidade | M07 | `pagamento` (SUM por academia), `matricula_status` (COUNT inadimplente por academia) | — | ✅ Claro |
 | **RF-REL-06** | Gerar relatório de frequência de alunos no check-in (taxa de comparecimento) | M07 | `checkin_log` (COUNT), `matricula` (dias_ativo CALC), taxa = checkins / dias_ativo | — | ✅ Claro |
-| **RF-REL-07** | Gerar relatório de desempenho de professor (quantidade alunos, receita gerada) | M07 | `matricula_professor` (COUNT), `pagamento` (SUM vinculado via professor_comissao) | **DUV-03** | ⏳ Aberto |
+| **RF-REL-07** | Gerar relatório de desempenho de professor (quantidade alunos, receita gerada) | M07 | `matricula_professor` (COUNT), `pagamento` (SUM vinculado via comissão) | — | ✅ Claro |
 | **RF-REL-08** | Gerar relatório de equipamentos em manutenção e custos acumulados | M07 | `manutencao_corretiva` (SUM custo, JOIN equipamento, WHERE status=MANUTENCAO) | — | ✅ Claro |
 | **RF-REL-09** | Permitir exportar relatórios em PDF, Excel, CSV | M07 | (Função técnica de formatação, não cria tabelas novas) | — | ✅ Claro |
+
+---
+
+## M07B — Insumos e Produtos (Alinhado à SPEC-007 / PLAN-007)
+
+| RF | Descrição | Módulo | Tabelas | DUV | Status |
+|---|---|---|---|---|---|
+| **RF-INSUMO-01** | Cadastrar produtos e insumos por categoria e unidade | M07B | `categoria_produto`, `produto` | — | ✅ Claro |
+| **RF-INSUMO-02** | Controlar níveis de estoque (mínimo, máximo, atual) | M07B | `produto` | — | ✅ Claro |
+| **RF-INSUMO-03** | Registrar movimentações de estoque (entrada, saída, devolução, ajuste) | M07B | `movimentacao_estoque` | — | ✅ Claro |
+| **RF-INSUMO-04** | Permitir venda de produtos com impacto no estoque | M07B | `produto`, `movimentacao_estoque` | — | ✅ Claro |
+| **RF-INSUMO-05** | Alertar produtos próximos ao vencimento e vencidos | M07B | `alerta_validade`, `produto` | — | ✅ Claro |
+| **RF-INSUMO-06** | Gerar requisição de compra e acompanhar aprovação | M07B | `requisicao_compra` | — | ✅ Claro |
+| **RF-INSUMO-07** | Consolidar custos de reposição e consumo por período | M07B | `movimentacao_estoque`, `produto` | — | ✅ Claro |
+| **RF-INSUMO-08** | Emitir relatórios de estoque e giro de produtos | M07B | `produto`, `movimentacao_estoque`, `alerta_validade` | — | ✅ Claro |
 
 ---
 
@@ -140,39 +155,13 @@
 
 ## Resumo de Impactos por Status
 
-### ✅ Requisitos Claros (Ready for SPEC)
+### ✅ Requisitos Claros (Atualizado em 4 abr 2026)
 
-**Total**: 35 RFs  
-**Tabelas novas necessárias**: ~45 (sem contar indexes/constraints)  
-**Complexidade**: Média
+**Total mapeado**: 70+ RFs entre módulos e integrações cruzadas  
+**Cobertura PLAN x Matriz**: Atualizada e alinhada  
+**Complexidade**: Média/Alta
 
-**RFs que não precisam de decisão DUV:**
-- M01 (8/8 RFs)
-- M02 (6/7 RFs — RF-ACE-07 descoped)
-- M03 (8/9 RFs — RF-FIN-09 aguarda DUV-03)
-- M04 (8/8 RFs)
-- M05 (5/8 RFs — 3 aguardam DUV-03, DUV-09)
-- M06 (8/8 RFs)
-- M07 (8/9 RFs — RF-REL-07 aguarda DUV-03)
-- M08 (5/5 RFs)
-
----
-
-### ⏳ Requisitos Abertos (Aguardando DUV)
-
-| RF | DUV | Impacto | Tabelas afetadas |
-|---|---|---|---|
-| **RF-ACE-03** | DUV-06 | Dias de carência (bloqueio automático) | `config_parametro`, `matricula_status` |
-| **RF-FIN-09** | DUV-03 | Modelo de comissão (origem de receita) | `pagamento`, `professor_lucratividade` |
-| **RF-PROF-04** | DUV-03 | Cálculo de comissão por tipo aula | `config_comissao`, `comissao_calculo` |
-| **RF-PROF-05** | DUV-03 | Pré-visualização de comissão | `comissao_calculo` (query) |
-| **RF-PROF-07** | DUV-03 | Relatório mensal de comissão | `comissao_calculo` (relatório) |
-| **RF-PROF-08** | DUV-09 | Designar professor p/ avaliação | `professor_permissao`, `avaliacao_fisica` |
-| **RF-REL-07** | DUV-03 | Desempenho de professor (receita) | `matricula_professor`, `pagamento` |
-
----
-
-### 🔴 Requisitos Descoped
+### ⛔ Requisitos Descoped
 
 | RF | Razão | Quando |
 |---|---|---|
@@ -229,30 +218,13 @@ CONFIG_COMISSAO
 
 ---
 
-## Decisões Bloqueadas por DUVidas
+## Decisões de DUV Aplicadas
 
-### DUV-03: Modelo de Comissionamento (🔴 CRÍTICA)
-
-**RFs bloqueadas**: 4 (RF-PROF-04, 05, 07 + RF-FIN-09, RF-REL-07)  
-**Impacto**: 
-- Se "por aula": `config_comissao(tipo_aula, %)` + tabela `aula_presenca`
-- Se "por aluno": `config_comissao(tipo_aluno, %)` + tabela `matricula`
-- Se "por plano vendido": `config_comissao(plano, %)` + tabela `comissao_bonificacao`
-- **Cenário real**: Provavelmente combinação dos 3 (pesos diferentes)
-
-**Ação**: Aguardar resposta Jonathan em entrevista
-
-### DUV-06: Dias de Carência (🟡 MÉDIA)
-
-**RFs bloqueadas**: 1 (RF-ACE-03)  
-**Impacto**: Apenas número configurável em `config_parametro`  
-**Ação**: Pode usar padrão (ex: 5 dias) e refinar depois
-
-### DUV-09: Professor Designado p/ Avaliação (🟡 MÉDIA)
-
-**RFs bloqueadas**: 1 (RF-PROF-08)  
-**Impacto**: Tabela `professor_permissao` com validation no create de `avaliacao_fisica`  
-**Ação**: Pode deixar permissivo inicialmente e refinar depois
+| DUV | Decisão aplicada na matriz | Impacto |
+|---|---|---|
+| **DUV-03** | Comissão por aluno mensal | RF-FIN-09, RF-PROF-04/05/07 e RF-REL-07 liberadas |
+| **DUV-06** | Carência de 3 dias | RF-ACE-03 liberada |
+| **DUV-07** | Produtos iniciais definidos | RF-INSUMO-01..08 consolidadas |
 
 ---
 

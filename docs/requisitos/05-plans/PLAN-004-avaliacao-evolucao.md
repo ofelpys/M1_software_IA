@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-004-avaliacao-evolucao.md  
 > **RFs Cobertas**: RF-AVAL-01 a 08 (8 RFs)  
+> **Rastreabilidade Explícita**: RF-AVAL-01, RF-AVAL-02, RF-AVAL-03, RF-AVAL-04, RF-AVAL-05, RF-AVAL-06, RF-AVAL-07, RF-AVAL-08  
 > **Tempo Estimado**: 6 horas
 
 ---

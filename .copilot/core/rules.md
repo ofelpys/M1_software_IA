@@ -34,11 +34,11 @@
 
 ---
 
-## 2. Banco de Dados — Decisão Crítica [BLOQUEADOR]
+## 2. Banco de Dados — Decisão Ratificada
 
 ### 2.1 Stack Definitivo (DP-TECH-STACK-001)
 
-**ATUAL**: Conflito entre documentos
+**ATUAL**: Conflito histórico já resolvido na Constitution
 
 | Documento | Decisão |
 |---|---|
@@ -48,10 +48,10 @@
 
 **REGRA OBRIGATÓRIA**: 
 ```
-❌ NÃO IMPLEMENTAR NENHUMA MIGRAÇÃO ATÉ DECISÃO FINAL
+✅ Implementar migrations exclusivamente para PostgreSQL via Flyway
 ```
 
-**Status atual**: 🔴 **AGUARDANDO RESOLUÇÃO**
+**Status atual**: ✅ **RESOLVIDO**
 
 **Resolução necessária em**: `.copilot/memory/constitution.md` 
 
@@ -67,28 +67,25 @@
 
 ---
 
-## 3. Comissionamento de Professores [BLOQUEADOR]
+## 3. Comissionamento de Professores
 
 ### 3.1 Status (DP-COMISSAO-PROF-001)
 
-**ATUAL**: Questão aberta sem resolução
+**ATUAL**: Questão resolvida em 2 de abril de 2026
 
 ```
-Cenários possíveis:
-1. Por aula ministrada (%)
-2. Por aluno inscrito
-3. Por plano vendido
-4. Híbrido (combinação dos 3)
+Modelo ratificado:
+1. Por aluno ativo mensal
+2. Fórmula: alunos_ativos × VLA × percentual
 ```
 
 **REGRA OBRIGATÓRIA**:
 ```
-❌ RF-PROF-04 BLOQUEADA ATÉ DECISÃO FINAL
-❌ Nenhum cálculo de comissão implementado
-✅ Apenas estrutura genérica de comissão permitida
+✅ RF-PROF-04 a RF-PROF-07 liberadas para implementação
+✅ Cálculo de comissão permitido conforme DUV-03
 ```
 
-**Resolução necessária em**: `mapa-mestre.md` → Decisão-COMISSAO-001.md
+**Referência de decisão**: `.copilot/memory/duv-resolutions.md` (DUV-03)
 
 ---
 
@@ -385,16 +382,16 @@ Breve descrição do que foi feito
 
 ---
 
-## 12. Decisões Pendentes — Bloqueadores Críticos
+## 12. Decisões Pendentes
 
-| Decisão | Status | Impacto | Prazo |
+| Decisão | Status | Impacto | Próximo passo |
 |---|---|---|---|
-| `DP-TECH-STACK-001` | 🔴 **CRÍTICA** | Migrations, drivers, tipos dados | Hoje |
-| `DP-COMISSAO-PROF-001` | 🔴 **CRÍTICA** | RF-PROF-04 a 07 (RH completo) | Hoje |
-| `DP-CATRACA-001` | 🟠 ALTA | RF-ACE-07 (integração hardware) | Hoje |
-| `DP-ACESSO-PROF-001` | 🟠 ALTA | Arquitetura frontend (mobile/web) | Hoje |
+| `DP-TECH-STACK-001` | ✅ RESOLVIDA | PostgreSQL definido | Seguir padrão Flyway + PL/pgSQL |
+| `DP-COMISSAO-PROF-001` | ✅ RESOLVIDA | Comissão destravada | Implementar conforme DUV-03 |
+| `DP-CATRACA-001` | ✅ RESOLVIDA | Escopo futuro | Não implementar na Fase 5 inicial |
+| `DP-ACESSO-PROF-001` | ✅ RESOLVIDA | Frontend desktop-first | Aplicar em UX dos módulos de professor |
 
-**Nenhuma implementação pode começar até estas decisões serem resolvidas.**
+**Não há bloqueadores críticos abertos no momento.**
 
 ---
 

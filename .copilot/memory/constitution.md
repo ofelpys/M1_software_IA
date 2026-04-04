@@ -39,29 +39,29 @@ Neste documento, resolvemos os 3 bloqueadores críticos identificados no mapa-me
 
 **Conflito**: Por aula? Por aluno? Por plano? Híbrido?
 
-**DECISÃO FINAL**: 🟠 **MODELO HÍBRIDO (Recomendado)**
+**DECISÃO FINAL**: 🟢 **MODELO POR ALUNO MENSAL**
 
 **Especificação**:
 ```
-Comissão = (% por Aula Ministrada) + (% por Novos Alunos) + (Bônus Desempenho)
+Comissão = Alunos_Ativos × VLA × Percentual
 
-Exemplo:
-- 70% da receita da aula (variável por tipo)
-- +5% por cada novo aluno que compra plano do professor
-- +Bônus mensal se >95% de frequência
+Onde:
+- Alunos_Ativos = total de alunos ativos no mês
+- VLA = valor do plano / 30
+- Percentual = configurável por professor/política
 ```
 
 **Justificativa**:
-- Incentiva tanto assiduidade (aulas) quanto venda (alunos)
-- Previne "viés para só vender sem executar"
-- Alinhado com cultura de academia (performance + volume)
+- Simplifica fechamento mensal e auditoria
+- Dá previsibilidade para financeiro e professores
+- Reduz ambiguidade de cálculo na implementação
 
 **Configurabilidade**:
 ```java
 // Em application.properties ou ConfigEntity
-professor.comissao.percentual-aula = 0.70
-professor.comissao.percentual-novo-aluno = 0.05
-professor.comissao.bonus-desempenho-minimo-frequencia = 0.95
+professor.comissao.modelo = por_aluno_mensal
+professor.comissao.percentual-padrao = 0.15
+professor.comissao.dia-fechamento = 5
 ```
 
 **Lei**: Se professor pede mudança, must ter aprovação de Jonathan via novo Decision Document.
@@ -110,15 +110,15 @@ professor.comissao.bonus-desempenho-minimo-frequencia = 0.95
 
 ---
 
-## 3. Prioridade de Resolução das Dúvidas Restantes
+## 3. Resoluções de Dúvidas (DUVs)
 
-| Dúvida | Responsável | Prazo | Impacto |
+| Dúvida | Resolução | Data | Impacto |
 |---|---|---|---|
-| **DUV-02**: Prof PC ou celular? | Jonathan + Dev | 2 dias | Frontend mobile decision |
-| **DUV-03**: Comissão modelo exato | Jonathan | 2 dias | RF-PROF-04 a 07 |
-| **DUV-04**: Cônjuges compartilham? | Jonathan | 3 dias | Modelo matrícula |
-| **DUV-06**: Dias carência bloqueio? | Jonathan | 3 dias | RF-ACE-03 config |
-| **DUV-07**: Venda produtos? | Jonathan | 3 dias | Escopo estoque |
+| **DUV-02**: Prof PC ou celular? | ✅ PC/Desktop | 2026-04-02 | Frontend desktop-first |
+| **DUV-03**: Comissão modelo exato | ✅ Por aluno mensal | 2026-04-02 | RF-PROF-04 a 07 destravadas |
+| **DUV-04**: Cônjuges compartilham? | ✅ Não (usuários separados) | 2026-04-02 | Modelo de matrícula/auditoria |
+| **DUV-06**: Dias carência bloqueio? | ✅ 3 dias corridos | 2026-04-02 | RF-ACE-03 configurada |
+| **DUV-07**: Venda produtos? | ✅ Sim (Whey + Creatina) | 2026-04-02 | Escopo de produtos definido |
 
 ---
 
@@ -172,7 +172,7 @@ Violação = Desvio não autorizado de qualquer decisão aqui.
 
 **Vigente desde**: 1 de abril de 2026
 
-**Revisão prevista**: 15 de abril de 2026 (após resolução das dúvidas)
+**Revisão prevista**: 15 de abril de 2026
 
 ---
 
@@ -181,7 +181,7 @@ Violação = Desvio não autorizado de qualquer decisão aqui.
 | Papel | Nome | Data | Assinatura |
 |---|---|---|---|
 | Eng Sênior | [Seu Nome] | 2026-04-01 | ✅ |
-| Proprietário | Jonathan R. Barbosa | [Pendente] | ⏳ |
+| Proprietário | Jonathan R. Barbosa | 2026-04-02 | ✅ |
 | Tech Lead | [A definir] | [Pendente] | ⏳ |
 
 ---
@@ -191,9 +191,9 @@ Violação = Desvio não autorizado de qualquer decisão aqui.
 Esta Constitution define as 3 decisões críticas que estavam bloqueando o projeto:
 
 1. ✅ **Stack**: PostgreSQL confirmado
-2. ✅ **Comissionamento**: Modelo híbrido proposto
+2. ✅ **Comissionamento**: Modelo por aluno mensal confirmado
 3. ✅ **Catraca**: Futuro, não Fase 1
 
-O projeto **pode agora prosseguir para Fase 2** com confiança.
+O projeto **pode prosseguir para Fase 4/5** com confiança.
 
 Toda future decision será registrada como addendum a este documento.

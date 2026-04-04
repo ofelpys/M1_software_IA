@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-005-professores.md  
 > **RFs Cobertas**: RF-PROF-01 a 08 (8 RFs)  
+> **Rastreabilidade Explícita**: RF-PROF-01, RF-PROF-02, RF-PROF-03, RF-PROF-04, RF-PROF-05, RF-PROF-06, RF-PROF-07, RF-PROF-08, RF-CAD-02, RF-FIN-03, RF-REL-04  
 > **Tempo Estimado**: 6 horas
 
 ---

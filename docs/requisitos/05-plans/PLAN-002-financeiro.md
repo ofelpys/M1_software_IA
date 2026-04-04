@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-002-financeiro.md  
 > **RFs Cobertas**: RF-FIN-01 a 09 (9 RFs)  
+> **Rastreabilidade Explícita**: RF-FIN-01, RF-FIN-02, RF-FIN-03, RF-FIN-04, RF-FIN-05, RF-FIN-06, RF-FIN-07, RF-FIN-08, RF-FIN-09, RF-ACE-03  
 > **Tempo Estimado**: 8 horas
 
 ---

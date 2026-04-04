@@ -1,8 +1,8 @@
 # PROJECT-STATE.MD — Status Atual do Projeto M1
 
-> **Última atualização**: 3 de abril de 2026, 17:30 UTC  
-> **Versão**: 1.3-FASE3-COMPLETA  
-> **Fase Atual**: Fase 1 ✅ Completa + Fase 2 ✅ COMPLETA + Fase 3 ✅ COMPLETA
+> **Última atualização**: 4 de abril de 2026, 19:45 UTC  
+> **Versão**: 1.5-FASE4-REACT-SKELETON  
+> **Fase Atual**: Fase 1 ✅ + Fase 2 ✅ + Fase 3 ✅ + Fase 4 🚧 EM ANDAMENTO
 
 ---
 
@@ -13,7 +13,7 @@
 | **Projeto** | Rede Força Total Academias (M1) |
 | **Proprietário** | Jonathan Rodrigues Barbosa |
 | **Stack** | React + Spring Boot + PostgreSQL |
-| **Fase** | 1 ✅ + 2 ✅ + **3 ✅ COMPLETA** (PLANs 001-008) |
+| **Fase** | 1 ✅ + 2 ✅ + 3 ✅ + **4 🚧 EM ANDAMENTO** |
 | **Bloqueadores** | 🟢 ZERO (todas 8 DUVs/DP resolvidas 2 abr) |
 | **Risco Overall** | 🟢 BAIXO (todas decisões confirmadas) |
 | **Pronto para Dev** | 🟢 100% (8 SPECs + 8 PLANs criados, 70 RFs rastreados) |
@@ -191,12 +191,29 @@
    ✅ Status: 100% PRONTO PARA DEV | Bloqueadores: 0
 ```
 
-### Fase 4 — Prototipagem ❌ NÃO INICIADA
+### Fase 4 — Prototipagem 🚧 EM ANDAMENTO (4 de abril)
 
 ```
-❌ HTML/CSS/JS prototipagem
-❌ React component skeleton
-❌ Figma/Wireframes (opcional)
+✅ HTML/CSS/JS prototipagem (pacote inicial + rodada 2)
+✅ Design system industrial/iron aplicado
+✅ Componentes base prototipados (cards, badges, tabela, input erro, progresso, sidebar)
+✅ Telas adicionais prototipadas (M05 Professores, M06 Equipamentos, M08 Comunicacao)
+✅ Fluxos críticos prototipados (check-in rápido, desbloqueio de inadimplente, feedback de envio)
+✅ React component skeleton criado (estrutura inicial por telas/modulos)
+⏳ Figma/Wireframes (opcional)
+
+Arquivos gerados:
+- docs/requisitos/06-prototipos/fase-4-iron/index.html
+- docs/requisitos/06-prototipos/fase-4-iron/styles.css
+- docs/requisitos/06-prototipos/fase-4-iron/app.js
+- docs/requisitos/06-prototipos/fase-4-iron/README.md
+- frontend/prototipo-react-fase4/package.json
+- frontend/prototipo-react-fase4/index.html
+- frontend/prototipo-react-fase4/src/App.jsx
+- frontend/prototipo-react-fase4/src/components/*
+- frontend/prototipo-react-fase4/src/screens/*
+- frontend/prototipo-react-fase4/src/styles.css
+- frontend/prototipo-react-fase4/README.md
 ```
 
 ### Fase 5 — Implementação ❌ NÃO INICIADA
@@ -226,7 +243,7 @@
 | **DUV-06** | Carência 3 dias confirmado | 2026-04-02 |
 | **DUV-07** | Produtos (whey+creatina) confirmado | 2026-04-02 |
 
-🟢 **ZERO bloqueadores restantes.** Projeto está 100% apto para Fase 2 imediatamente.
+🟢 **ZERO bloqueadores restantes.** Projeto está 100% apto para Fase 4/5.
 
 ---
 
@@ -395,8 +412,8 @@ Fase 4-5 (Dev+Prototipagem) pode iniciar AGORA:
 
 | Risco | Probabilidade | Impacto | Mitigação |
 |---|---|---|---|
-| DUV-02 não respondida a tempo | 🟡 20% | 🟠 MÉDIA | Usar default (responsivo) |
-| DUV-03 ambígua na implementação | 🟡 30% | 🔴 ALTA | Comunicação clara com Jonathan |
+| Divergência entre documentos de memória | 🟡 25% | 🟠 MÉDIA | Reconciliação periódica entre constitution/rules/contexts/project-state |
+| Scope creep durante implementação | 🟡 35% | 🟠 MÉDIA | Seguir PLANs 001-008 e controle de change request |
 | Scope creep durante SPEC-001 | 🟡 40% | 🟠 MÉDIA | Manter focus em O-01/O-02 |
 | Performance em check-in < 2seg | 🟢 10% | 🟠 ALTA | Índices + benchmarking early |
 | Cálculo de comissão errado | 🟡 25% | 🔴 CRÍTICA | 100% test coverage + auditoria |

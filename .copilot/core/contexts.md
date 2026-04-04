@@ -38,7 +38,7 @@ Isto determina:
 
 ---
 
-## 2. Stack Definitivo (AGUARDANDO RESOLUÇÃO)
+## 2. Stack Definitivo (RATIFICADO)
 
 ### 2.1 Confirmado
 
@@ -50,26 +50,16 @@ Isto determina:
 | **Migrations** | Flyway | ✅ CONFIRMADO |
 | **Testing** | JUnit5 + Jest | ✅ CONFIRMADO |
 
-### 2.2 Bloqueado (DP-TECH-STACK-001)
+### 2.2 Database (DP-TECH-STACK-001)
 
-| Componente | Opção A | Opção B | Status |
-|---|---|---|---|
-| **Database** | PostgreSQL | MySQL | 🔴 **PENDENTE** |
+| Componente | Opção Escolhida | Status |
+|---|---|---|
+| **Database** | PostgreSQL 15+ | ✅ **RESOLVIDO** |
 
-**Impacto se PostgreSQL**:
+**Impacto confirmado (PostgreSQL)**:
 - Drivers: `org.postgresql:postgresql`
 - JPA types: UUID nativo, arrays suportados
 - Functions: PL/pgSQL
-
-**Impacto se MySQL**:
-- Drivers: `mysql:mysql-connector-java`
-- JPA types: Sem UUID nativo (string)
-- Functions: MySQL syntax
-
-**Decisão critica porque**:
-- Migrations não podem começar sem escolha
-- ORM precisa ser configurado corretamente
-- Deployment assumptions mudarão
 
 ---
 
@@ -138,23 +128,23 @@ Isto determina:
 
 | Risco | Probabilidade | Impacto | Mitigação |
 |---|---|---|---|
-| **DP-TECH-STACK-001 não resolvida** | 🟢 BAIXA | 🔴 CRÍTICA | Resolver hoje |
-| **DP-COMISSAO-PROF-001 ambígua** | 🟡 MÉDIA | 🔴 CRÍTICA | Entrevista com Jonathan |
+| **Divergência documental entre fontes de memória** | 🟡 MÉDIA | 🟠 ALTA | Reconciliação periódica dos artefatos |
+| **Erro em cálculo de comissão na implementação** | 🟡 MÉDIA | 🔴 CRÍTICA | Testes extensivos + auditoria |
 | **Integração catraca não clara** | 🟡 MÉDIA | 🟠 ALTA | Verificar hardware |
 | **Performance em check-in** | 🟡 MÉDIA | 🟠 ALTA | Índices de DB otimizados |
-| **Erro em cálculo de comissão** | 🟡 MÉDIA | 🟠 ALTA | Testes extensivos |
+| **Scope creep de requisitos em dev** | 🟡 MÉDIA | 🟠 ALTA | Controle de change requests |
 
 ---
 
-## 5. Decisões Pendentes de Negócio
+## 5. Decisões de Negócio (Status Atual)
 
-| Decisão | Implicação | Prazo Crítico |
+| Decisão | Status | Implicação |
 |---|---|---|
-| **DP-COMISSAO-PROF-001**: Modelo de comissão | RF-PROF-04 a 07 bloqueadas | **HOJE** |
-| **DP-CATRACA-001**: Integração hardware | RF-ACE-07 arquitetura | **HOJE** |
-| **DP-ACESSO-PROF-001**: Professor em PC ou celular | Frontend mobile vs responsivo | **HOJE** |
-| **DP-PLANO-COMPARTILHADO-001**: Cônjuges compartilham? | Modelo de dados (matrícula) | Amanhã |
-| **DUV-06**: Dias de carência antes de bloqueio | RF-ACE-03 configuração | Amanhã |
+| **DP-COMISSAO-PROF-001**: Modelo de comissão | ✅ Resolvida (por aluno mensal) | RF-PROF-04 a 07 liberadas |
+| **DP-CATRACA-001**: Integração hardware | ✅ Resolvida (Fase futura) | RF-ACE-07 fora do escopo inicial |
+| **DP-ACESSO-PROF-001**: Professor em PC ou celular | ✅ Resolvida (PC/Desktop) | Frontend desktop-first |
+| **DP-PLANO-COMPARTILHADO-001**: Cônjuges compartilham? | ✅ Resolvida (usuários separados) | Modelo de dados e auditoria definidos |
+| **DUV-06**: Dias de carência antes de bloqueio | ✅ Resolvida (3 dias) | RF-ACE-03 configurada |
 
 ---
 

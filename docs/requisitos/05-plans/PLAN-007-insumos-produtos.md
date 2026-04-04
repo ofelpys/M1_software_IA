@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-007-insumos-produtos.md  
 > **RFs Cobertas**: RF-INSUMO-01 a 08 (8 RFs)  
+> **Rastreabilidade Explícita**: RF-INSUMO-01, RF-INSUMO-02, RF-INSUMO-03, RF-INSUMO-04, RF-INSUMO-05, RF-INSUMO-06, RF-INSUMO-07, RF-INSUMO-08  
 > **Tempo Estimado**: 6 horas
 
 ---

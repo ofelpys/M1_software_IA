@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-008-comunicacao-notificacoes.md  
 > **RFs Cobertas**: RF-COM-01 a 05 (5 RFs)  
+> **Rastreabilidade Explícita**: RF-COM-01, RF-COM-02, RF-COM-03, RF-COM-04, RF-COM-05, RF-FIN-01, RF-REL-03, RF-INSUMO-04, RF-AVAL-05  
 > **Tempo Estimado**: 4 horas
 
 ---

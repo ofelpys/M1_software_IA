@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fase 4 - Protótipo Industrial Iron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">FT</span>
+        <div>
+          <h1>Força Total</h1>
+          <p>M1 - Protótipo Fase 4</p>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <button class="menu-item is-active" data-screen="dashboard"><span class="menu-icon">[DB]</span> Painel</button>
+        <button class="menu-item" data-screen="recepcao"><span class="menu-icon">[RCP]</span> Recepção</button>
+        <button class="menu-item" data-screen="cadastro"><span class="menu-icon">[CAD]</span> Cadastro</button>
+        <button class="menu-item" data-screen="financeiro"><span class="menu-icon">[FIN]</span> Financeiro</button>
+        <button class="menu-item" data-screen="professores"><span class="menu-icon">[PRF]</span> Professores</button>
+        <button class="menu-item" data-screen="equipamentos"><span class="menu-icon">[EQP]</span> Equipamentos</button>
+        <button class="menu-item" data-screen="comunicacao"><span class="menu-icon">[COM]</span> Comunicação</button>
+        <button class="menu-item" data-screen="operacao"><span class="menu-icon">[OPS]</span> Operação</button>
+      </nav>
+
+      <section class="preview-card">
+        <h2>Preview de KPI</h2>
+        <div class="mini-chart" aria-hidden="true">
+          <span style="height: 32%"></span>
+          <span style="height: 56%"></span>
+          <span style="height: 44%"></span>
+          <span style="height: 74%"></span>
+          <span style="height: 68%"></span>
+          <span style="height: 82%"></span>
+          <span style="height: 59%"></span>
+        </div>
+      </section>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="kicker">Industrial / Iron</p>
+          <h2 id="screen-title">Dashboard Executivo</h2>
+        </div>
+        <button class="btn-primary">Nova ação</button>
+      </header>
+
+      <section class="screen is-visible" id="screen-dashboard">
+        <div class="grid metrics-grid">
+          <article class="metric-card critical">
+            <div class="metric-top"></div>
+            <p>Inadimplência</p>
+            <strong>14,2%</strong>
+            <span class="badge alert">Alerta</span>
+          </article>
+          <article class="metric-card ok">
+            <div class="metric-top"></div>
+            <p>Alunos ativos</p>
+            <strong>1.872</strong>
+            <span class="badge success">Ativo</span>
+          </article>
+          <article class="metric-card info">
+            <div class="metric-top"></div>
+            <p>Receita do mês</p>
+            <strong>R$ 486.900</strong>
+            <span class="badge info">Consolidado</span>
+          </article>
+          <article class="metric-card warning">
+            <div class="metric-top"></div>
+            <p>Planos trial</p>
+            <strong>54</strong>
+            <span class="badge trial">Trial</span>
+          </article>
+        </div>
+
+        <div class="grid split-8-4">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Alunos e status</h3>
+              <input type="search" placeholder="Buscar CPF ou nome" />
+            </div>
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th>Aluno</th>
+                  <th>Plano</th>
+                  <th>Status</th>
+                  <th>Presença</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="avatar-cell">
+                      <span class="avatar">AM</span>
+                      <span class="presence online"></span>
+                      <span>Ana Martins</span>
+                    </div>
+                  </td>
+                  <td>Premium</td>
+                  <td><span class="badge premium">Premium</span></td>
+                  <td>95%</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="avatar-cell">
+                      <span class="avatar">RS</span>
+                      <span class="presence offline"></span>
+                      <span>Rafael Silva</span>
+                    </div>
+                  </td>
+                  <td>Mensal</td>
+                  <td><span class="badge debt">Inadimplente</span></td>
+                  <td>61%</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="avatar-cell">
+                      <span class="avatar">LP</span>
+                      <span class="presence online"></span>
+                      <span>Larissa Pinto</span>
+                    </div>
+                  </td>
+                  <td>Plano anual</td>
+                  <td><span class="badge active">Ativo</span></td>
+                  <td>88%</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="panel">
+            <h3>Ocupação por unidade</h3>
+            <div class="progress-item">
+              <label>Centro - 82%</label>
+              <div class="progress"><span style="width:82%"></span></div>
+            </div>
+            <div class="progress-item">
+              <label>Zona Sul - 69%</label>
+              <div class="progress"><span style="width:69%"></span></div>
+            </div>
+            <div class="progress-item">
+              <label>Zona Norte - 57%</label>
+              <div class="progress"><span style="width:57%"></span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-recepcao">
+        <div class="grid split-6-6">
+          <section class="panel">
+            <h3>Check-in rápido (3 cliques)</h3>
+            <form class="form-grid" novalidate>
+              <label>CPF do aluno
+                <input id="checkin-cpf" type="text" placeholder="000.000.000-00" />
+              </label>
+              <label>Status simulado
+                <select id="checkin-status">
+                  <option value="ativo">Ativo</option>
+                  <option value="inadimplente">Inadimplente</option>
+                  <option value="bloqueado">Bloqueado</option>
+                </select>
+              </label>
+              <button id="checkin-run" class="btn-primary" type="button">Validar e registrar check-in</button>
+            </form>
+
+            <div id="checkin-result" class="feedback-box info-box is-hidden" role="status" aria-live="polite"></div>
+          </section>
+
+          <section class="panel">
+            <h3>Fila de recepção</h3>
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th>Horário</th>
+                  <th>Aluno</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>18:02</td><td>Bruno Matos</td><td><span class="badge active">Ativo</span></td></tr>
+                <tr><td>18:03</td><td>Rita Nogueira</td><td><span class="badge debt">Inadimplente</span></td></tr>
+                <tr><td>18:04</td><td>Ana Costa</td><td><span class="badge trial">Trial</span></td></tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-cadastro">
+        <div class="grid split-6-6">
+          <section class="panel">
+            <h3>Novo aluno</h3>
+            <form class="form-grid" novalidate>
+              <label>Nome
+                <input type="text" value="" placeholder="Nome completo" />
+              </label>
+              <label>CPF
+                <input class="input-error" type="text" value="123" placeholder="000.000.000-00" />
+                <small>CPF inválido no formato esperado.</small>
+              </label>
+              <label>Email
+                <input type="email" placeholder="nome@exemplo.com" />
+              </label>
+              <label>Plano
+                <select>
+                  <option>Mensal</option>
+                  <option>Anual</option>
+                  <option>Premium</option>
+                </select>
+              </label>
+              <button class="btn-primary" type="button">Salvar cadastro</button>
+            </form>
+          </section>
+          <section class="panel">
+            <h3>Validação de status</h3>
+            <p>Badges padronizados:</p>
+            <div class="badge-row">
+              <span class="badge active">Ativo</span>
+              <span class="badge debt">Inadimplente</span>
+              <span class="badge trial">Trial</span>
+              <span class="badge premium">Premium</span>
+              <span class="badge info">Plano</span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-financeiro">
+        <div class="grid split-8-4">
+          <section class="panel">
+            <h3>Fluxo financeiro rápido</h3>
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Descrição</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>04/04</td><td>Mensalidades recebidas</td><td>R$ 18.200</td><td><span class="badge success">OK</span></td></tr>
+                <tr><td>04/04</td><td>Comissões previstas</td><td>R$ 7.980</td><td><span class="badge alert">Revisão</span></td></tr>
+                <tr><td>03/04</td><td>Boletos em atraso</td><td>R$ 12.100</td><td><span class="badge debt">Inadimplente</span></td></tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="panel">
+            <h3>Ações</h3>
+            <button class="btn-primary">Gerar recibo</button>
+            <button class="btn-ghost">Exportar CSV</button>
+          </section>
+        </div>
+
+        <div class="grid split-8-4">
+          <section class="panel">
+            <h3>Inadimplência e desbloqueio</h3>
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th>Aluno</th>
+                  <th>Dias atraso</th>
+                  <th>Status</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-debt-row>
+                  <td>Rafael Silva</td>
+                  <td>6</td>
+                  <td><span class="badge debt debt-status">Inadimplente</span></td>
+                  <td><button class="btn-ghost btn-xs debt-unlock" type="button">Desbloquear</button></td>
+                </tr>
+                <tr data-debt-row>
+                  <td>Rita Nogueira</td>
+                  <td>4</td>
+                  <td><span class="badge debt debt-status">Inadimplente</span></td>
+                  <td><button class="btn-ghost btn-xs debt-unlock" type="button">Desbloquear</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="unlock-result" class="feedback-box success-box is-hidden" role="status" aria-live="polite"></div>
+          </section>
+
+          <section class="panel">
+            <h3>Regra aplicada</h3>
+            <p>Bloqueio automático após 3 dias de carência.</p>
+            <p>Desbloqueio manual exige registro de operador.</p>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-professores">
+        <div class="grid split-8-4">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Equipe de professores</h3>
+              <input type="search" placeholder="Buscar professor" />
+            </div>
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th>Professor</th>
+                  <th>Especialidade</th>
+                  <th>Status</th>
+                  <th>Comissão</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="avatar-cell">
+                      <span class="avatar">JG</span>
+                      <span class="presence online"></span>
+                      <span>João Gomes</span>
+                    </div>
+                  </td>
+                  <td>Musculação</td>
+                  <td><span class="badge active">Ativo</span></td>
+                  <td>R$ 3.420</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="avatar-cell">
+                      <span class="avatar">CS</span>
+                      <span class="presence online"></span>
+                      <span>Carla Souza</span>
+                    </div>
+                  </td>
+                  <td>Pilates</td>
+                  <td><span class="badge premium">Plano</span></td>
+                  <td>R$ 2.980</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="avatar-cell">
+                      <span class="avatar">MF</span>
+                      <span class="presence offline"></span>
+                      <span>Marcos Ferreira</span>
+                    </div>
+                  </td>
+                  <td>Funcional</td>
+                  <td><span class="badge trial">Trial</span></td>
+                  <td>R$ 1.210</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="panel">
+            <h3>Performance do mês</h3>
+            <div class="progress-item">
+              <label>Retenção média - 78%</label>
+              <div class="progress"><span style="width:78%"></span></div>
+            </div>
+            <div class="progress-item">
+              <label>Aulas realizadas - 91%</label>
+              <div class="progress"><span style="width:91%"></span></div>
+            </div>
+            <div class="progress-item">
+              <label>Satisfação alunos - 84%</label>
+              <div class="progress"><span style="width:84%"></span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-equipamentos">
+        <div class="grid split-8-4">
+          <section class="panel">
+            <h3>Inventário e manutenção</h3>
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th>Equipamento</th>
+                  <th>Unidade</th>
+                  <th>Status</th>
+                  <th>Próx. manutenção</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Leg Press 45</td>
+                  <td>Centro</td>
+                  <td><span class="badge active">Ativo</span></td>
+                  <td>12/04</td>
+                </tr>
+                <tr>
+                  <td>Esteira X900</td>
+                  <td>Zona Sul</td>
+                  <td><span class="badge alert">Revisão</span></td>
+                  <td>06/04</td>
+                </tr>
+                <tr>
+                  <td>Banco Supino Reto</td>
+                  <td>Zona Norte</td>
+                  <td><span class="badge debt">Inativo</span></td>
+                  <td>Em manutenção</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="panel">
+            <h3>Salas e ocupação</h3>
+            <div class="progress-item">
+              <label>Sala Musculação - 88%</label>
+              <div class="progress"><span style="width:88%"></span></div>
+            </div>
+            <div class="progress-item">
+              <label>Sala Funcional - 63%</label>
+              <div class="progress"><span style="width:63%"></span></div>
+            </div>
+            <div class="progress-item">
+              <label>Estúdio Yoga - 74%</label>
+              <div class="progress"><span style="width:74%"></span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-comunicacao">
+        <div class="grid split-6-6">
+          <section class="panel">
+            <h3>Disparo de comunicados</h3>
+            <form class="form-grid" novalidate>
+              <label>Canal
+                <select>
+                  <option>Email</option>
+                  <option>SMS</option>
+                  <option>Push</option>
+                </select>
+              </label>
+              <label>Segmento
+                <select>
+                  <option>Inadimplentes</option>
+                  <option>Todos ativos</option>
+                  <option>Trial</option>
+                </select>
+              </label>
+              <label>Mensagem
+                <input type="text" placeholder="Escreva o comunicado" />
+              </label>
+              <div class="row-actions">
+                <button id="com-send" class="btn-primary" type="button">Enviar agora</button>
+                <button id="com-fail" class="btn-ghost" type="button">Simular falha</button>
+              </div>
+            </form>
+            <div id="com-result" class="feedback-box info-box is-hidden" role="status" aria-live="polite"></div>
+          </section>
+
+          <section class="panel">
+            <h3>Histórico de envios</h3>
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Canal</th>
+                  <th>Público</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>04/04 18:00</td><td>Email</td><td>Inadimplentes</td><td><span class="badge success">Enviado</span></td></tr>
+                <tr><td>04/04 12:40</td><td>Push</td><td>Todos ativos</td><td><span class="badge info">Fila</span></td></tr>
+                <tr><td>03/04 19:10</td><td>SMS</td><td>Trial</td><td><span class="badge alert">Parcial</span></td></tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-operacao">
+        <div class="grid split-6-6">
+          <section class="panel">
+            <h3>Checklist de operação</h3>
+            <ul class="checklist">
+              <li><input type="checkbox" checked /> Cards com barra de criticidade</li>
+              <li><input type="checkbox" checked /> Avatares com presença</li>
+              <li><input type="checkbox" checked /> Tabela compacta com hover</li>
+              <li><input type="checkbox" checked /> Input com erro</li>
+              <li><input type="checkbox" checked /> Sidebar com preview</li>
+            </ul>
+          </section>
+          <section class="panel">
+            <h3>Diretrizes aplicadas</h3>
+            <p>Layout 12 colunas / gap 8px, base escura sem gradientes coloridos, vermelho como ação primária.</p>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

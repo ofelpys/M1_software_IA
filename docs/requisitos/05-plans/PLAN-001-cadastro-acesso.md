@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-001-cadastro-acesso.md  
 > **RFs Cobertas**: RF-CAD-01 a 08, RF-ACE-01 a 07 (15 RFs)  
+> **Rastreabilidade Explícita**: RF-CAD-01, RF-CAD-02, RF-CAD-03, RF-CAD-04, RF-CAD-05, RF-CAD-06, RF-CAD-07, RF-CAD-08, RF-ACE-01, RF-ACE-02, RF-ACE-03, RF-ACE-04, RF-ACE-05, RF-ACE-06, RF-ACE-07  
 > **Tempo Estimado**: 16 horas (8h database + 8h API + React)
 
 ---

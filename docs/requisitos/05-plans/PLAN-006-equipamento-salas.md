@@ -4,6 +4,7 @@
 > **Data**: 3 de abril de 2026  
 > **Baseado em**: SPEC-006-equipamento-salas.md  
 > **RFs Cobertas**: RF-EQUIP-01 a 08 (8 RFs)  
+> **Rastreabilidade Explícita**: RF-EQUIP-01, RF-EQUIP-02, RF-EQUIP-03, RF-EQUIP-04, RF-EQUIP-05, RF-EQUIP-06, RF-EQUIP-07, RF-EQUIP-08, RF-PROF-04  
 > **Tempo Estimado**: 6 horas
 
 ---
