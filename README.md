@@ -4,6 +4,8 @@ Projeto de software para gestao centralizada de uma rede de 5 academias, com foc
 
 Repositorio: https://github.com/ofelpys/M1_software_IA
 
+**BPMN do negocio (PDF): [Abrir diagrama completo](docs/requisitos/06-prototipos/bpmn-negocio-m1.pdf)**
+
 ## Status Atual
 
 - Fase 1 (Analysis): completa

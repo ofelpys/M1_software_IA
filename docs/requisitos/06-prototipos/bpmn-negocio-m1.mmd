@@ -1,0 +1,74 @@
+flowchart TB
+
+  subgraph POOL[POOL - Operacao do Negocio M1]
+    direction TB
+
+    subgraph L1[RAIA 1 - Cliente]
+      direction LR
+      C1((Inicio)) --> C2[Solicita matricula] --> C3[Realiza treino] --> C4[Recebe comunicacoes] --> C5((Fim))
+    end
+
+    subgraph L2[RAIA 2 - Recepcao]
+      direction LR
+      R1[Coleta dados cadastrais] --> R2[Envia cadastro para sistema]
+      R3[Registra check-in]
+      R4[Orienta aluno em bloqueio]
+      R5[Confirma renovacao ou cancelamento]
+    end
+
+    subgraph L3[RAIA 3 - Sistema M1]
+      direction LR
+      S1[Validar CPF e dados obrigatorios] --> S2{Cadastro valido?}
+      S3[Criar aluno e matricula] --> S4[Gerar contrato e registro]
+      S5[Atualizar status financeiro] --> S6{Aluno adimplente?}
+      S7[Liberar acesso]
+      S8[Bloquear acesso]
+      S9[Registrar auditoria]
+      S10[Atualizar dashboards e relatorios]
+      S11[Disparar notificacoes]
+      S12[Atualizar estoque e equipamentos quando houver uso]
+    end
+
+    subgraph L4[RAIA 4 - Financeiro]
+      direction LR
+      F1[Registrar pagamento] --> F2[Calcular juros e atraso] --> F3{Pagamento confirmado?}
+      F4[Marcar inadimplencia]
+      F5[Autorizar desbloqueio]
+    end
+
+    subgraph L5[RAIA 5 - Professores e Operacao]
+      direction LR
+      P1[Registrar presenca em aula]
+      P2[Registrar avaliacao e evolucao]
+      P3[Atualizar agenda de salas]
+      P4[Solicitar insumos e produtos]
+    end
+
+    subgraph L6[RAIA 6 - Coordenacao e Proprietario]
+      direction LR
+      G1[Monitorar KPIs por unidade] --> G2[Comparar unidades da rede] --> G4[Tomar decisoes de negocio]
+      G3[Aprovar excecoes criticas]
+    end
+  end
+
+  C2 --> R1
+  R2 --> S1
+  S2 -- Nao --> R1
+  S2 -- Sim --> S3
+  S4 --> F1
+  F3 -- Nao --> F4 --> S5 --> S8 --> R4 --> S11 --> C4
+  F3 -- Sim --> S5 --> S6
+  S6 -- Nao --> S8
+  S6 -- Sim --> S7 --> R3 --> C3
+
+  C3 --> P1 --> S9 --> S10
+  C3 --> P2 --> S9
+  C3 --> P3 --> S12 --> S10
+  C3 --> P4 --> S12
+
+  S8 --> R5 --> F1
+  F3 -- Sim --> F5 --> S7
+
+  S10 --> G1
+  G3 --> S11
+  S11 --> C4
