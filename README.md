@@ -223,10 +223,10 @@ Estado consolidado:
 
 ## Proximos Passos Recomendados
 
-1. Consolidar a concepcao do MVP (escopo In/Out, DoD, riscos e ondas de evolucao) como base da fase atual.
-2. Rodar validacao em ambiente de staging real com URL publicada (smoke + fluxo critico).
-3. Subir PostgreSQL de desenvolvimento e validar Flyway no banco alvo definitivo.
-4. Expandir pacote de endpoints canonicos com cobertura dos modulos M03/M04/M05.
+1. Consolidar a concepcao do MVP (escopo In/Out, DoD, riscos e ondas de evolucao) como base da fase atual. (concluido)
+2. Subir PostgreSQL de desenvolvimento e validar Flyway no banco alvo definitivo. (concluido)
+3. Expandir pacote de endpoints canonicos com cobertura dos modulos M03/M04/M05. (concluido)
+4. Rodar validacao em ambiente de staging real com URL publicada (smoke + fluxo critico). (pendente de URL publica)
 5. Publicar relatorio de integracao real em staging com status PASS.
 
 ## Autoria
@@ -234,4 +234,4 @@ Estado consolidado:
 - Proprietario do negocio: Jonathan Rodrigues Barbosa
 - Arquitetura e engenharia de software: Felipe Costa Monteiro
 
-Ultima atualizacao: 05/04/2026
+Ultima atualizacao: 05/04/2026 (atualizado)

@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @Sql(
     executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
     statements = {
+      "DROP TABLE IF EXISTS avaliacao_evolucao",
+      "DROP TABLE IF EXISTS professor",
       "DROP TABLE IF EXISTS preferencia_notificacao",
       "DROP TABLE IF EXISTS notificacao",
       "DROP TABLE IF EXISTS comunicacao_disparo",
@@ -33,6 +35,8 @@ import org.springframework.test.web.servlet.MockMvc;
       "CREATE TABLE desbloqueio_acesso (desbloqueio_id BIGSERIAL PRIMARY KEY, aluno_id BIGINT NOT NULL, aluno_nome VARCHAR(150) NOT NULL, dias_atraso INTEGER NOT NULL, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
       "CREATE TABLE pagamento (pagamento_id BIGSERIAL PRIMARY KEY, aluno_nome VARCHAR(150) NOT NULL, valor NUMERIC(10, 2) NOT NULL, status VARCHAR(30) NOT NULL, ativo BOOLEAN NOT NULL DEFAULT TRUE, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
       "CREATE TABLE comunicacao_disparo (disparo_id BIGSERIAL PRIMARY KEY, canal VARCHAR(30) NOT NULL, segmento VARCHAR(120) NOT NULL, mensagem TEXT NOT NULL, ok_solicitado BOOLEAN NOT NULL, ok_processado BOOLEAN NOT NULL, resposta VARCHAR(255) NOT NULL, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
+      "CREATE TABLE avaliacao_evolucao (avaliacao_id BIGSERIAL PRIMARY KEY, aluno_nome VARCHAR(150) NOT NULL, teste VARCHAR(120) NOT NULL, evolucao VARCHAR(120) NOT NULL, status VARCHAR(30) NOT NULL, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
+      "CREATE TABLE professor (professor_id BIGSERIAL PRIMARY KEY, nome VARCHAR(150) NOT NULL, especialidade VARCHAR(120) NOT NULL, status VARCHAR(30) NOT NULL, comissao NUMERIC(10,2) NOT NULL, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
       "CREATE TABLE notificacao (notificacao_id BIGSERIAL PRIMARY KEY, canal VARCHAR(30) NOT NULL, segmento VARCHAR(120) NOT NULL, mensagem TEXT NOT NULL, status VARCHAR(30) NOT NULL, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
       "CREATE TABLE preferencia_notificacao (usuario_id BIGINT PRIMARY KEY, email_habilitado BOOLEAN NOT NULL DEFAULT TRUE, sms_habilitado BOOLEAN NOT NULL DEFAULT TRUE, push_habilitado BOOLEAN NOT NULL DEFAULT TRUE, atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)"
     })
@@ -165,6 +169,68 @@ class P0IntegrationFlowTests {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.usuarioId").value(7))
         .andExpect(jsonPath("$.emailHabilitado").value(true));
+  }
+
+  @Test
+  void shouldRunM03M04M05Flow() throws Exception {
+    String createAluno = """
+        {
+          "nome": "Bruno Costa",
+          "cpf": "987.654.321-00",
+          "email": "bruno@forcatotal.com",
+          "plano": "PRATA"
+        }
+        """;
+
+    mockMvc.perform(post("/api/alunos")
+          .contentType("application/json")
+            .content(createAluno))
+        .andExpect(status().isCreated());
+
+    String avaliacao = """
+        {
+          "aluno": "Bruno Costa",
+          "teste": "resistencia",
+          "evolucao": "12%",
+          "status": "EM_PROGRESSO"
+        }
+        """;
+
+    mockMvc.perform(post("/api/avaliacoes")
+          .contentType("application/json")
+            .content(avaliacao))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.aluno").value("Bruno Costa"));
+
+    mockMvc.perform(get("/api/avaliacoes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].teste").value("resistencia"));
+
+    String professor = """
+        {
+          "nome": "Marina Rocha",
+          "especialidade": "Funcional",
+          "status": "ATIVO",
+          "comissao": 12.5
+        }
+        """;
+
+    mockMvc.perform(post("/api/professores")
+          .contentType("application/json")
+            .content(professor))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.nome").value("Marina Rocha"));
+
+    mockMvc.perform(get("/api/professores"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].especialidade").value("Funcional"));
+
+    mockMvc.perform(get("/api/relatorios/kpis"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.alunosCadastrados").value(1))
+        .andExpect(jsonPath("$.comunicacoesProcessadas").value(0));
   }
 
   @Test
