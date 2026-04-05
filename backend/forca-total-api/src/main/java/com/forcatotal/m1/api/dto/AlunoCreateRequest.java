@@ -9,6 +9,7 @@ public record AlunoCreateRequest(
     @NotBlank @Size(min = 3, max = 150) String nome,
     @NotBlank @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$") String cpf,
     @NotBlank @Email String email,
-    @NotBlank String plano
+    @NotBlank String plano,
+    @NotBlank String unidade
 ) {
 }

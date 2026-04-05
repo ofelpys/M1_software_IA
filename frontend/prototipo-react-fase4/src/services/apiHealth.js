@@ -1,13 +1,14 @@
 import { getApiBaseUrl } from './httpClient';
 
-const HEALTH_PATH = import.meta.env?.VITE_API_HEALTH_PATH || '/health';
+const HEALTH_PATH = import.meta.env?.VITE_API_HEALTH_PATH || '/actuator/health';
 
 function resolveHealthUrl() {
   if (HEALTH_PATH.startsWith('http://') || HEALTH_PATH.startsWith('https://')) {
     return HEALTH_PATH;
   }
 
-  const base = getApiBaseUrl().replace(/\/$/, '');
+  const rawBase = getApiBaseUrl().trim().replace(/\/$/, '');
+  const base = rawBase.replace(/\/api$/i, '');
   const path = HEALTH_PATH.startsWith('/') ? HEALTH_PATH : `/${HEALTH_PATH}`;
   return `${base}${path}`;
 }

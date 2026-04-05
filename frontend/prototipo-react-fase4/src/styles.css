@@ -101,6 +101,21 @@ h1, h2, h3 {
   align-items: center;
   gap: 10px;
 }
+.topbar-unit-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #464646;
+  background: #141414;
+  padding: 6px 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.topbar-unit-select select {
+  min-width: 150px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
 .api-health {
   display: inline-flex;
   align-items: center;
@@ -168,6 +183,9 @@ h1, h2, h3 {
   background: var(--bg-1);
   border: 1px solid var(--line);
   padding: 12px;
+}
+.unit-panel {
+  margin-top: 10px;
 }
 .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 

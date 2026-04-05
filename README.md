@@ -4,6 +4,31 @@
 
 > **Java LTS:** o projeto esta padronizado em **Java 21 (LTS)**, que e a LTS mais recente suportada de forma estavel pelo stack atual.
 
+## Inicio Rapido Local (Stack + Banco)
+
+
+Para subir a stack local completa (PostgreSQL + backend + frontend), execute:
+
+```powershell
+./scripts/start-local-stack.ps1
+```
+
+O script:
+- valida pre-requisitos locais (Java 21, Maven e PostgreSQL);
+- inicia o servico do PostgreSQL (se necessario);
+- cria o banco `forca_total` automaticamente quando ainda nao existir;
+- sobe backend (`:8080`) e frontend (`:5173`).
+
+### Inicializacao do banco de dados
+
+A inicializacao do schema e automatica no boot do backend via Flyway (`spring.flyway.enabled=true`), aplicando as migracoes em `backend/forca-total-api/src/main/resources/db/migration`.
+
+Se quiser preparar somente o banco antes de subir toda a stack, rode o mesmo script sem backend/frontend:
+
+```powershell
+./scripts/start-local-stack.ps1 -SkipBackend -SkipFrontend
+```
+
 Projeto de software para gestao centralizada de uma rede de 5 academias, com foco em rastreabilidade ponta a ponta: requisito -> SPEC -> PLAN -> prototipo -> implementacao.
 
 ## Escopo do Projeto (MVP)
@@ -114,6 +139,17 @@ Para validar somente a toolchain, sem rodar testes:
 
 Script:
 - [scripts/bootstrap-backend.ps1](scripts/bootstrap-backend.ps1)
+
+### Subir stack local integrada (PostgreSQL + backend + frontend)
+
+Para subir tudo em uma vez (com validacao do PostgreSQL, backend em `:8080` e frontend em `:5173`):
+
+```powershell
+./scripts/start-local-stack.ps1
+```
+
+Script:
+- [scripts/start-local-stack.ps1](scripts/start-local-stack.ps1)
 
 ## Memory Bank (.copilot)
 

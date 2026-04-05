@@ -17,7 +17,7 @@ export function getFallbackMode(moduleKey) {
     return 'strict';
   }
 
-  const globalMode = normalizeMode(getEnv('VITE_API_FALLBACK_MODE', 'auto'));
+  const globalMode = normalizeMode(getEnv('VITE_API_FALLBACK_MODE', 'strict'));
   const moduleMode = normalizeMode(getEnv(`VITE_API_FALLBACK_${String(moduleKey || '').toUpperCase()}`, globalMode));
 
   if (moduleMode === 'auto' && runtimeIsProduction()) {

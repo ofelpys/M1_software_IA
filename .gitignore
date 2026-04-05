@@ -7,3 +7,4 @@ backend/forca-total-api/target/
 **/target/
 .tools/
 .vscode/
+logs/local-stack/

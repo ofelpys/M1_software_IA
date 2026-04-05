@@ -13,6 +13,7 @@ import ComunicacaoScreen from './screens/ComunicacaoScreen';
 import OperacaoScreen from './screens/OperacaoScreen';
 import InsumosScreen from './screens/InsumosScreen';
 import { checkApiHealth } from './services/apiHealth';
+import { getApiBaseUrl } from './services/httpClient';
 
 const titles = {
   dashboard: 'Dashboard Executivo',
@@ -42,7 +43,7 @@ const actionLabels = {
   operacao: 'Nova tarefa',
 };
 
-function renderScreen(key) {
+function renderScreen(key, selectedUnidade) {
   switch (key) {
     case 'recepcao':
       return <RecepcaoScreen />;
@@ -65,15 +66,17 @@ function renderScreen(key) {
     case 'operacao':
       return <OperacaoScreen />;
     default:
-      return <DashboardScreen />;
+      return <DashboardScreen selectedUnidade={selectedUnidade} />;
   }
 }
 
 export default function App() {
   const [active, setActive] = useState('dashboard');
+  const [selectedUnidade, setSelectedUnidade] = useState('Todas');
   const [health, setHealth] = useState({ status: 'checking', message: 'Verificando API...' });
   const title = useMemo(() => titles[active] || titles.dashboard, [active]);
   const actionLabel = useMemo(() => actionLabels[active] || actionLabels.dashboard, [active]);
+  const apiBaseUrl = useMemo(() => getApiBaseUrl(), []);
 
   const refreshHealth = async () => {
     setHealth({ status: 'checking', message: 'Verificando API...' });
@@ -91,8 +94,17 @@ export default function App() {
     <div className="app-shell">
       <Sidebar active={active} onChange={setActive} />
       <main className="workspace">
-        <Topbar title={title} actionLabel={actionLabel} health={health} onRefreshHealth={refreshHealth} />
-        {renderScreen(active)}
+        <Topbar
+          title={title}
+          actionLabel={actionLabel}
+          health={health}
+          onRefreshHealth={refreshHealth}
+          apiBaseUrl={apiBaseUrl}
+          active={active}
+          selectedUnidade={selectedUnidade}
+          onSelectUnidade={setSelectedUnidade}
+        />
+        {renderScreen(active, selectedUnidade)}
       </main>
     </div>
   );

@@ -10,6 +10,7 @@ export function buildM01AlunoCreateRequest(payload) {
     cpf: String(payload?.cpf || '').trim(),
     email: String(payload?.email || '').trim(),
     plano: String(payload?.plano || '').trim(),
+    unidade: String(payload?.unidade || '').trim(),
   };
 }
 

@@ -93,3 +93,48 @@ export async function checkinComFallback(payload) {
     };
   }
 }
+
+export async function listarAlunos() {
+  const data = await requestJson(apiRoutes.m01.alunos, { method: 'GET' });
+  if (!Array.isArray(data)) {
+    return [];
+  }
+  return data;
+}
+
+export async function atualizarAlunoComFallback(alunoId, payload) {
+  const normalizedPayload = buildM01AlunoCreateRequest({
+    ...payload,
+    cpf: formatCpf(payload?.cpf),
+  });
+
+  try {
+    const data = await requestJson(`${apiRoutes.m01.alunos}/${alunoId}`, {
+      method: 'PUT',
+      body: normalizedPayload,
+    });
+    const parsed = parseM01AlunoCreateResponse(data);
+    return normalizeApiSave(normalizedPayload, parsed);
+  } catch (error) {
+    return {
+      ok: false,
+      source: 'api-error',
+      error: `${getApiErrorMessage(error)} Modo estrito ativo: alteracao nao foi persistida no backend.`,
+    };
+  }
+}
+
+export async function inativarAlunoComFallback(alunoId) {
+  try {
+    await requestJson(`${apiRoutes.m01.alunos}/${alunoId}`, {
+      method: 'DELETE',
+    });
+    return { ok: true, source: 'api' };
+  } catch (error) {
+    return {
+      ok: false,
+      source: 'api-error',
+      error: `${getApiErrorMessage(error)} Modo estrito ativo: inativacao nao foi persistida no backend.`,
+    };
+  }
+}

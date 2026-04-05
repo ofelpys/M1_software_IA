@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 globalThis.fetch = async (url, options = {}) => {
   const path = String(url);
 
-  if (path.endsWith('/m01/alunos')) {
+  if (path.endsWith('/m01/alunos') || path.endsWith('/api/alunos')) {
     return {
       ok: true,
       json: async () => ({
@@ -14,7 +14,7 @@ globalThis.fetch = async (url, options = {}) => {
     };
   }
 
-  if (path.endsWith('/m01/checkins')) {
+  if (path.endsWith('/m01/checkins') || path.endsWith('/api/acesso/checkin')) {
     return {
       ok: true,
       json: async () => ({
@@ -24,7 +24,7 @@ globalThis.fetch = async (url, options = {}) => {
     };
   }
 
-  if (path.endsWith('/m02/inadimplencia/desbloqueios')) {
+  if (path.endsWith('/m02/inadimplencia/desbloqueios') || /\/api\/acesso\/\d+\/desbloquear$/.test(path)) {
     return {
       ok: true,
       json: async () => ({
@@ -33,7 +33,7 @@ globalThis.fetch = async (url, options = {}) => {
     };
   }
 
-  if (path.endsWith('/m08/comunicacoes/disparos')) {
+  if (path.endsWith('/m08/comunicacoes/disparos') || path.endsWith('/api/comunicacoes/disparos')) {
     return {
       ok: true,
       json: async () => ({
@@ -60,6 +60,7 @@ test('fluxo crítico integrado (cadastro -> check-in -> financeiro -> comunicaç
     cpf: '12345678901',
     email: 'ana@teste.com',
     plano: 'Mensal',
+    unidade: 'Centro',
   });
   assert.equal(cadastro.ok, true);
   assert.equal(cadastro.source, 'api');
@@ -72,6 +73,7 @@ test('fluxo crítico integrado (cadastro -> check-in -> financeiro -> comunicaç
   assert.equal(checkin.type, 'success-box');
 
   const financeiro = await desbloquearInadimplenteComFallback({
+    alunoId: 101,
     aluno: 'Rafael Silva',
     dias: 4,
     status: 'Inadimplente',

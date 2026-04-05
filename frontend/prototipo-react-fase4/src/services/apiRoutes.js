@@ -61,6 +61,6 @@ const routeProfiles = {
   },
 };
 
-const profile = String(getEnv('VITE_API_ROUTE_PROFILE', 'legacy')).trim().toLowerCase();
+const profile = String(getEnv('VITE_API_ROUTE_PROFILE', 'canonical')).trim().toLowerCase();
 
 export const apiRoutes = routeProfiles[profile] || routeProfiles.legacy;

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { salvarAlunoComFallback } from './m01Gateway';
+import { useEffect, useState } from 'react';
+import { atualizarAlunoComFallback, salvarAlunoComFallback } from './m01Gateway';
 import { formatCpf, isCpfComplete } from '../../utils/cpf';
 
 const initial = {
@@ -7,11 +7,27 @@ const initial = {
   cpf: '',
   email: '',
   plano: 'Mensal',
+  unidade: 'Centro',
 };
 
-export default function CadastroForm() {
+export default function CadastroForm({ onSaved, editAluno }) {
   const [form, setForm] = useState(initial);
   const [feedback, setFeedback] = useState(null);
+
+  useEffect(() => {
+    if (!editAluno) {
+      setForm(initial);
+      return;
+    }
+
+    setForm({
+      nome: editAluno?.nome || '',
+      cpf: editAluno?.cpf || '',
+      email: editAluno?.email || '',
+      plano: editAluno?.plano || 'Mensal',
+      unidade: editAluno?.unidade || 'Centro',
+    });
+  }, [editAluno]);
 
   const onChange = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
 
@@ -26,11 +42,15 @@ export default function CadastroForm() {
       cpf: formatCpf(form.cpf),
     };
 
-    const result = await salvarAlunoComFallback(payload);
+    const result = editAluno?.id
+      ? await atualizarAlunoComFallback(editAluno.id, payload)
+      : await salvarAlunoComFallback(payload);
+
     if (!result.ok) {
       setFeedback({ type: 'error-box', text: result.error });
       return;
     }
+
     if (result.source === 'mock') {
       const detail = result.fallbackNotice ? `${result.fallbackNotice} ` : '';
       setFeedback({
@@ -41,13 +61,17 @@ export default function CadastroForm() {
       return;
     }
 
-    setFeedback({ type: 'success-box', text: `Cadastro salvo com sucesso. ID ${result.id}. (API real)` });
+    const actionLabel = editAluno?.id ? 'Matrícula alterada' : 'Cadastro salvo';
+    setFeedback({ type: 'success-box', text: `${actionLabel} com sucesso. ID ${result.id}. (API real)` });
     setForm(initial);
+    if (typeof onSaved === 'function') {
+      onSaved();
+    }
   };
 
   return (
     <>
-      <h3>Novo aluno (M01 - Cadastro/Acesso)</h3>
+      <h3>{editAluno?.id ? `Alterar matrícula #${editAluno.id}` : 'Novo aluno (M01 - Cadastro/Acesso)'}</h3>
       <form className="form-grid" onSubmit={(e) => e.preventDefault()}>
         <label>
           Nome
@@ -76,8 +100,18 @@ export default function CadastroForm() {
             <option>Premium</option>
           </select>
         </label>
+        <label>
+          Unidade
+          <select value={form.unidade} onChange={(e) => onChange('unidade', e.target.value)}>
+            <option>Centro</option>
+            <option>Zona Sul</option>
+            <option>Zona Norte</option>
+            <option>Leste</option>
+            <option>Oeste</option>
+          </select>
+        </label>
         <button className="btn-primary" type="button" onClick={onSave}>
-          Salvar cadastro
+          {editAluno?.id ? 'Salvar alteração' : 'Salvar cadastro'}
         </button>
       </form>
       {feedback && <div className={`feedback-box ${feedback.type}`}>{feedback.text}</div>}

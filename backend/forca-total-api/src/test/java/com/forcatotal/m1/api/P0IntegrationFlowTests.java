@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
       "DROP TABLE IF EXISTS desbloqueio_acesso",
       "DROP TABLE IF EXISTS registro_acesso",
       "DROP TABLE IF EXISTS aluno",
-      "CREATE TABLE aluno (aluno_id BIGSERIAL PRIMARY KEY, nome VARCHAR(150) NOT NULL, cpf CHAR(14) NOT NULL UNIQUE, email VARCHAR(255) NOT NULL, plano VARCHAR(60) NOT NULL, ativo BOOLEAN NOT NULL DEFAULT TRUE, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
+      "CREATE TABLE aluno (aluno_id BIGSERIAL PRIMARY KEY, nome VARCHAR(150) NOT NULL, cpf CHAR(14) NOT NULL UNIQUE, email VARCHAR(255) NOT NULL, plano VARCHAR(60) NOT NULL, unidade VARCHAR(120) NOT NULL, ativo BOOLEAN NOT NULL DEFAULT TRUE, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
       "CREATE TABLE registro_acesso (registro_acesso_id BIGSERIAL PRIMARY KEY, aluno_id BIGINT, cpf CHAR(14) NOT NULL, status_informado VARCHAR(30) NOT NULL, acesso_liberado BOOLEAN NOT NULL, mensagem VARCHAR(255) NOT NULL, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
       "CREATE TABLE desbloqueio_acesso (desbloqueio_id BIGSERIAL PRIMARY KEY, aluno_id BIGINT NOT NULL, aluno_nome VARCHAR(150) NOT NULL, dias_atraso INTEGER NOT NULL, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
       "CREATE TABLE pagamento (pagamento_id BIGSERIAL PRIMARY KEY, aluno_nome VARCHAR(150) NOT NULL, valor NUMERIC(10, 2) NOT NULL, status VARCHAR(30) NOT NULL, ativo BOOLEAN NOT NULL DEFAULT TRUE, criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)",
@@ -52,7 +52,8 @@ class P0IntegrationFlowTests {
           "nome": "Maria Silva",
           "cpf": "123.456.789-10",
           "email": "maria@forcatotal.com",
-          "plano": "OURO"
+          "plano": "OURO",
+          "unidade": "Centro"
         }
         """;
 
@@ -178,7 +179,8 @@ class P0IntegrationFlowTests {
           "nome": "Bruno Costa",
           "cpf": "987.654.321-00",
           "email": "bruno@forcatotal.com",
-          "plano": "PRATA"
+          "plano": "PRATA",
+          "unidade": "Zona Sul"
         }
         """;
 
@@ -240,7 +242,8 @@ class P0IntegrationFlowTests {
           "nome": "Jo",
           "cpf": "123",
           "email": "email-invalido",
-          "plano": ""
+          "plano": "",
+          "unidade": ""
         }
         """;
 

@@ -1,14 +1,36 @@
 import { getEnv } from './env.js';
 
-const API_BASE_URL = String(getEnv('VITE_API_BASE_URL', 'http://localhost:8080/api')).replace(/\/$/, '');
+const API_BASE_URL = String(getEnv('VITE_API_BASE_URL', '/api')).trim().replace(/\/$/, '');
 
 class ApiClientError extends Error {
-  constructor(message, { kind = 'unknown', status } = {}) {
+  constructor(message, { kind = 'unknown', status, url } = {}) {
     super(message);
     this.name = 'ApiClientError';
     this.kind = kind;
     this.status = status;
+    this.url = url;
   }
+}
+
+function withAlternateLocalhost(url) {
+  if (url.includes('://127.0.0.1')) {
+    return url.replace('://127.0.0.1', '://localhost');
+  }
+  if (url.includes('://localhost')) {
+    return url.replace('://localhost', '://127.0.0.1');
+  }
+  return null;
+}
+
+async function doFetch(url, { method, body, signal }) {
+  return fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+    signal,
+  });
 }
 
 function withTimeout(timeoutMs) {
@@ -25,17 +47,39 @@ export async function requestJson(path, { method = 'GET', body, timeoutMs = 5000
   const safePath = baseHasApiSuffix && pathHasApiPrefix
     ? normalizedPath.replace(/^\/api/i, '') || '/'
     : normalizedPath;
-  const url = `${API_BASE_URL}${safePath}`;
+  const primaryUrl = `${API_BASE_URL}${safePath}`;
+  const alternateUrl = withAlternateLocalhost(primaryUrl);
+  const urlsToTry = alternateUrl ? [primaryUrl, alternateUrl] : [primaryUrl];
 
   try {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body ? JSON.stringify(body) : undefined,
-      signal: timeout.controller.signal,
-    });
+    let response;
+    let lastNetworkError;
+    let usedUrl = urlsToTry[0];
+
+    for (const candidateUrl of urlsToTry) {
+      try {
+        response = await doFetch(candidateUrl, {
+          method,
+          body,
+          signal: timeout.controller.signal,
+        });
+        usedUrl = candidateUrl;
+        break;
+      } catch (error) {
+        if (error?.name === 'AbortError') {
+          throw error;
+        }
+        if (error instanceof TypeError) {
+          lastNetworkError = error;
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    if (!response) {
+      throw lastNetworkError || new TypeError('network');
+    }
 
     const data = await response.json().catch(() => ({}));
 
@@ -43,6 +87,7 @@ export async function requestJson(path, { method = 'GET', body, timeoutMs = 5000
       throw new ApiClientError(data?.message || `HTTP ${response.status}`, {
         kind: 'http',
         status: response.status,
+        url: usedUrl,
       });
     }
 
@@ -57,10 +102,10 @@ export async function requestJson(path, { method = 'GET', body, timeoutMs = 5000
     }
 
     if (error instanceof TypeError) {
-      throw new ApiClientError('Falha de conexão com a API.', { kind: 'network' });
+      throw new ApiClientError('Falha de conexão com a API.', { kind: 'network', url: primaryUrl });
     }
 
-    throw new ApiClientError('Falha inesperada ao acessar a API.', { kind: 'unknown' });
+    throw new ApiClientError('Falha inesperada ao acessar a API.', { kind: 'unknown', url: primaryUrl });
   } finally {
     timeout.clear();
   }
@@ -80,7 +125,7 @@ export function getApiErrorMessage(error) {
   }
 
   if (error.kind === 'network') {
-    return 'API indisponível: falha de conexão.';
+    return `API indisponível: falha de conexão${error.url ? ` (${error.url})` : ''}.`;
   }
 
   if (error.kind === 'http') {

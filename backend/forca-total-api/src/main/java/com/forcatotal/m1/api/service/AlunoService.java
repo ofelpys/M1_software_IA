@@ -21,17 +21,18 @@ public class AlunoService {
 
   public AlunoCreateResponse create(AlunoCreateRequest request) {
     AlunoCreateResponse.AlunoPayload payload = new AlunoCreateResponse.AlunoPayload(
-        request.nome(), request.cpf(), request.email(), request.plano());
+        request.nome(), request.cpf(), request.email(), request.plano(), request.unidade());
 
     KeyHolder keyHolder = new GeneratedKeyHolder();
     jdbcTemplate.update(connection -> {
       var statement = connection.prepareStatement(
-          "INSERT INTO aluno(nome, cpf, email, plano) VALUES (?, ?, ?, ?)",
+          "INSERT INTO aluno(nome, cpf, email, plano, unidade) VALUES (?, ?, ?, ?, ?)",
           Statement.RETURN_GENERATED_KEYS);
       statement.setString(1, request.nome());
       statement.setString(2, request.cpf());
       statement.setString(3, request.email());
       statement.setString(4, request.plano());
+        statement.setString(5, request.unidade());
       return statement;
     }, keyHolder);
 
@@ -54,6 +55,7 @@ public class AlunoService {
     return jdbcTemplate.query(
         """
             SELECT aluno_id, nome, cpf, email, plano
+            , unidade
             FROM aluno
             WHERE ativo = TRUE
             ORDER BY aluno_id DESC
@@ -64,13 +66,15 @@ public class AlunoService {
                 rs.getString("nome"),
                 rs.getString("cpf"),
                 rs.getString("email"),
-                rs.getString("plano"))));
+                rs.getString("plano"),
+                rs.getString("unidade"))));
   }
 
   public Optional<AlunoCreateResponse> findById(Long alunoId) {
     List<AlunoCreateResponse> items = jdbcTemplate.query(
         """
             SELECT aluno_id, nome, cpf, email, plano
+            , unidade
             FROM aluno
             WHERE aluno_id = ? AND ativo = TRUE
             """,
@@ -80,7 +84,8 @@ public class AlunoService {
                 rs.getString("nome"),
                 rs.getString("cpf"),
                 rs.getString("email"),
-          rs.getString("plano"))),
+                rs.getString("plano"),
+                rs.getString("unidade"))),
       alunoId);
 
     return items.stream().findFirst();
@@ -90,13 +95,14 @@ public class AlunoService {
     int updated = jdbcTemplate.update(
         """
             UPDATE aluno
-            SET nome = ?, cpf = ?, email = ?, plano = ?, atualizado_em = CURRENT_TIMESTAMP
+            SET nome = ?, cpf = ?, email = ?, plano = ?, unidade = ?, atualizado_em = CURRENT_TIMESTAMP
             WHERE aluno_id = ? AND ativo = TRUE
             """,
         request.nome(),
         request.cpf(),
         request.email(),
         request.plano(),
+          request.unidade(),
         alunoId);
 
     if (updated == 0) {
