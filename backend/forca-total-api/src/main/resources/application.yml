@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: forca-total-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/forca_total}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+server:
+  port: ${PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

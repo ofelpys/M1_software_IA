@@ -2,11 +2,16 @@ import { getApiErrorMessage, requestJson } from '../../services/httpClient.js';
 import { apiRoutes } from '../../services/apiRoutes.js';
 import { desbloquearAluno } from '../../services/mockApi.js';
 import { buildM02DesbloqueioRequest, parseM02DesbloqueioResponse } from '../../contracts/m02.contract.js';
+import { isStrictFallback } from '../../services/integrationPolicy.js';
 
 export async function desbloquearInadimplenteComFallback(row) {
   try {
     const requestBody = buildM02DesbloqueioRequest(row);
-    const data = await requestJson(apiRoutes.m02.desbloqueioInadimplencia, {
+    const resolvedPath = String(apiRoutes.m02.desbloqueioInadimplencia).includes('{alunoId}')
+      ? String(apiRoutes.m02.desbloqueioInadimplencia).replace('{alunoId}', String(row?.alunoId || row?.id || 0))
+      : apiRoutes.m02.desbloqueioInadimplencia;
+
+    const data = await requestJson(resolvedPath, {
       method: 'POST',
       body: requestBody,
     });
@@ -18,6 +23,14 @@ export async function desbloquearInadimplenteComFallback(row) {
       source: 'api',
     };
   } catch (error) {
+    if (isStrictFallback('m02')) {
+      return {
+        row: { ...row },
+        message: `${getApiErrorMessage(error)} Modo estrito ativo: desbloqueio nao foi persistido no backend.`,
+        source: 'api-error',
+      };
+    }
+
     const fallback = await desbloquearAluno(row);
     return {
       row: fallback,

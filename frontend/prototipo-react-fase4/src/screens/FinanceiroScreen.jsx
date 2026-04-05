@@ -5,8 +5,8 @@ import { desbloquearInadimplenteComFallback } from '../modules/m02-financeiro/m0
 
 export default function FinanceiroScreen() {
   const [rows, setRows] = useState([
-    { aluno: 'Rafael Silva', dias: 6, status: 'Inadimplente', unlocked: false },
-    { aluno: 'Rita Nogueira', dias: 4, status: 'Inadimplente', unlocked: false },
+    { alunoId: 1001, aluno: 'Rafael Silva', dias: 6, status: 'Inadimplente', unlocked: false },
+    { alunoId: 1002, aluno: 'Rita Nogueira', dias: 4, status: 'Inadimplente', unlocked: false },
   ]);
   const [feedback, setFeedback] = useState(null);
 

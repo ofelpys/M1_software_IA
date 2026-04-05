@@ -10,6 +10,8 @@
 
 Esta pasta centraliza governança, contexto e estado do projeto para manter continuidade entre sessões.
 
+Observacao de escopo: a governanca desta pasta esta orientada ao ciclo atual de MVP, com foco em entrega incremental e validacao rapida, e nao em um programa enterprise completo.
+
 ---
 
 ## 2. Estrutura Atual

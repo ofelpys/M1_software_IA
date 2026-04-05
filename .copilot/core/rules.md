@@ -16,10 +16,10 @@
 2️⃣  .copilot/core/rules.md (Regras não-negociáveis)
 3️⃣  docs/requisitos/02-mapa/mapa-mestre.md (Conflitos resolvidos)
 4️⃣  docs/requisitos/01-normalizados/* (Requisitos normalizados)
-5️⃣  specs/*/spec.md (Especificações por fluxo)
-6️⃣  specs/*/plan.md (Decisões técnicas)
-7️⃣  specs/*/tasks.md (Tarefas para dev)
-8️⃣  Código fonte (Implementação)
+5️⃣  docs/requisitos/04-specs/SPEC-*.md (Especificações por módulo)
+6️⃣  docs/requisitos/05-plans/PLAN-*.md (Planos técnicos)
+7️⃣  frontend/prototipo-react-fase4/src/* + backend/* (Implementação)
+8️⃣  tests/* + reports/* + logs/* (Evidências e validação)
 ```
 
 **Implicação**: Se há conflito entre documentos, a hierarquia define. Nunca inventar ou improvisar.

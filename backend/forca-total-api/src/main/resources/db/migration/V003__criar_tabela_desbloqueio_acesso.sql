@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS desbloqueio_acesso (
+  desbloqueio_id BIGSERIAL PRIMARY KEY,
+  aluno_id BIGINT NOT NULL,
+  aluno_nome VARCHAR(150) NOT NULL,
+  dias_atraso INTEGER NOT NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

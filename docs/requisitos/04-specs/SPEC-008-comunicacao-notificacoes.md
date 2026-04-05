@@ -9,6 +9,8 @@
 
 ---
 
+> Nota de escopo MVP: esta SPEC orienta a entrega do MVP operacional. Requisitos de robustez em nivel enterprise ficam como evolucao futura e nao sao criterio de aceite desta fase.
+
 ## 1. Visão Geral
 
 ### Propósito

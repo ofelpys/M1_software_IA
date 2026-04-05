@@ -1,190 +1,75 @@
 # PLAN-008 — Comunicação & Notificações (Implementação Técnica)
 
-> **Versão**: 1.0  
-> **Data**: 3 de abril de 2026  
-> **Baseado em**: SPEC-008-comunicacao-notificacoes.md  
-> **RFs Cobertas**: RF-COM-01 a 05 (5 RFs)  
-> **Rastreabilidade Explícita**: RF-COM-01, RF-COM-02, RF-COM-03, RF-COM-04, RF-COM-05, RF-FIN-01, RF-REL-03, RF-INSUMO-04, RF-AVAL-05  
-> **Tempo Estimado**: 4 horas
+> Versão: 1.1  
+> Data: 5 de abril de 2026  
+> Baseado em: SPEC-008-comunicacao-notificacoes.md  
+> RFs Cobertas: RF-COM-01 a 05  
+> Situação do documento: alinhado ao estado real do projeto (MVP operacional)
 
 ---
 
-## 1. Tabelas Principais
+> Nota de escopo MVP: este PLAN descreve implementacao tecnica orientada ao MVP operacional. Itens tipicos de plataforma enterprise entram como backlog de evolucao.
 
-```sql
-TABLE notificacao {
-  notificacao_id BIGSERIAL PRIMARY KEY
-  usuario_id BIGINT NOT NULL REFERENCES usuario(usuario_id) ON DELETE CASCADE
-  
-  tipo ENUM('MATRICULA_VENCIDA', 'AULA_PROXIMA', 'COMISSAO_DISPONIVEL', 'ALERTA_ESTOQUE', 'MENSAGEM')
-  titulo VARCHAR(200) NOT NULL
-  conteudo TEXT NOT NULL
-  
-  canal ENUM('EMAIL', 'SMS', 'PUSH', 'APP') NOT NULL
-  
-  status ENUM('PENDENTE', 'ENVIADA', 'LIDA', 'FALHA') DEFAULT 'PENDENTE'
-  data_envio TIMESTAMP
-  data_leitura TIMESTAMP
-  
-  link_relacionado VARCHAR(500) -- Ex: /alunos/123/matricula
-  
-  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-}
+## 1. Diagnóstico Real (Abr/2026)
 
-TABLE template_notificacao {
-  template_id SMALLSERIAL PRIMARY KEY
-  tipo_notificacao VARCHAR(50) NOT NULL UNIQUE
-  
-  titulo_template VARCHAR(200) WITH VARIABLE {nome_aluno}, {data}, etc
-  conteudo_template TEXT WITH VARIABLES
-  
-  canais ENUM('EMAIL', 'SMS', 'PUSH')[]
-  ativo BOOLEAN DEFAULT TRUE
-  
-  atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-}
-
-TABLE log_comunicacao {
-  log_id BIGSERIAL PRIMARY KEY
-  usuario_destinatario_id BIGINT REFERENCES usuario(usuario_id)
-  
-  tipo_comunicacao VARCHAR(50)
-  canal VARCHAR(30)
-  
-  status_envio ENUM('SUCESSO', 'FALHA', 'RETRY') NOT NULL
-  mensagem_erro TEXT
-  
-  tentativas SMALLINT DEFAULT 1
-  proxima_tentativa TIMESTAMP
-  
-  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-}
-
-TABLE preferencia_usuario {
-  preferencia_id BIGSERIAL PRIMARY KEY
-  usuario_id BIGINT NOT NULL REFERENCES usuario(usuario_id) ON DELETE CASCADE UNIQUE
-  
-  notificacoes_email BOOLEAN DEFAULT TRUE
-  notificacoes_sms BOOLEAN DEFAULT TRUE
-  notificacoes_push BOOLEAN DEFAULT TRUE
-  notificacoes_app BOOLEAN DEFAULT TRUE
-  
-  horario_silencioso_inicio TIME
-  horario_silencioso_fim TIME
-  
-  frequencia_digest ENUM('DIARIA', 'SEMANAL', 'NUNCA') DEFAULT 'DIARIA'
-  
-  atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-}
-```
+- Backend implementado: disparo de comunicação, listagem de notificações e preferências por usuário.
+- Frontend implementado: tela de comunicação integrada ao gateway.
+- Banco implementado para este módulo: `notificacao`, `preferencia_notificacao`, `comunicacao_disparo`.
+- Não implementado ainda: integrações externas reais (email/sms/push), templates versionados, retry assíncrono robusto e schedulers de negócio.
 
 ---
 
-## 2. API REST (10 Endpoints)
+## 2. Escopo de Dados Ajustado
 
-```
-GET    /api/notificacoes (Listar do usuário)
-GET    /api/notificacoes/{id} (Detalhe)
-PUT    /api/notificacoes/{id}/marcar-como-lida (Marcar lida)
+### 2.1 Tabelas reais já existentes
 
-POST   /api/usuarios/{id}/preferencias (Salvar preferências)
-GET    /api/usuarios/{id}/preferencias (Buscar preferências)
+- `notificacao`
+- `preferencia_notificacao`
+- `comunicacao_disparo`
 
-POST   /api/comunicacoes/email-teste (Enviar test email)
-GET    /api/comunicacoes/status (Status sistema SMS/Email)
+### 2.2 Tabelas alvo sob demanda funcional
 
-POST   /api/templates/notificacao (Criar template - Admin)
-PUT    /api/templates/{id} (Editar template)
-GET    /api/templates (Listar templates)
-```
+- `template_notificacao`
+- `log_comunicacao`
+
+Observação: o módulo está apto para fluxo interno de comunicação. Integrações externas devem entrar por etapa controlada.
 
 ---
 
-## 3. Integrações Externas
+## 3. API Real vs Alvo
 
-```java
-// Email: SendGrid ou AWS SES
-// SMS: Twillio ou ClickSend
-// Push: Firebase Cloud Messaging (FCM)
+### 3.1 Endpoints implementados
 
-@Service
-public class EmailService {
-  public void enviarNotificacao(Notificacao notif) {
-    // SendGrid API call
-  }
-}
+- `POST /api/comunicacoes/disparos`
+- `GET /api/notificacoes`
+- `POST /api/usuarios/{usuarioId}/preferencias`
+- `GET /api/usuarios/{usuarioId}/preferencias`
 
-@Service
-public class SMSService {
-  public void enviarSMS(String telefone, String mensagem) {
-    // Twillio API call
-  }
-}
+### 3.2 Endpoints pendentes
 
-@Service
-public class PushNotificationService {
-  public void enviarPush(String deviceToken, Notificacao notif) {
-    // FCM API call
-  }
-}
-```
+- marcação granular de leitura por notificação
+- templates administrativos
+- status de gateways externos e reprocessamento automático
 
 ---
 
-## 4. React Components
+## 4. Backlog Priorizado
 
-```jsx
-// NotificacoesPage.jsx, PreferenciasNotificacoes.jsx
-```
-
----
-
-## 5. Schedulers
-
-```java
-// Diário: Verificar matrículas próximas a vencer
-@Scheduled(cron = "0 0 * * *")
-public void notificarMatriculasVencimento() { ... }
-
-// Diário às 6h: Notificar aulas do dia
-@Scheduled(cron = "0 6 * * *")
-public void notificarAulasDia() { ... }
-
-// 5º dia do mês: Notificar comissão disponível
-@Scheduled(cron = "0 8 5 * *")
-public void notificarComissao() { ... }
-
-// Diário às 22h30: Digest diário (se usuario preferir)
-@Scheduled(cron = "0 22 30 * * *")
-public void enviarDigestDiario() { ... }
-```
+1. P0: completar ciclo de estado da notificação (pendente, enviada, lida, falha).
+2. P1: integrar provedor externo de email com fila/retry.
+3. P1: criar templates e versionamento.
+4. P2: ampliar para SMS/push e agendamentos por evento.
 
 ---
 
-## 6. Critérios de Aceição
+## 5. Critérios de Aceite Atualizados
 
-```
-✅ Notificações
-  ☑ Email funcional (teste + produção)
-  ☑ SMS funcional (teste + produção)
-  ☑ Push notifications (opcional - Fase 1)
-  ☑ Preferências de usuário respeitadas
-
-✅ API
-  ☑ 10 endpoints funcionando
-  ☑ Retry automático em caso de falha
-
-✅ React
-  ☑ Centro de notificações
-  ☑ Preferências customizáveis
-
-✅ Logs
-  ☑ Todas tentativas de envio registradas
-  ☑ Auditoria de falhas
-```
+- Implementado (MVP): disparo e consulta básica de notificações, preferências por usuário.
+- Parcial: rastreabilidade de estados e observabilidade.
+- Pendente: integrações externas e automações completas.
 
 ---
 
-**Tempo Estimado**: 4 horas  
-**Status**: 📋 Pronto para desenvolvimento
+## 6. Status
+
+Status real: módulo operacional interno, ainda sem stack completa de mensageria externa.

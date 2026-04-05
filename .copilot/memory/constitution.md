@@ -135,11 +135,11 @@ docs/requisitos/02-mapa/mapa-mestre.md
   ↓
 docs/requisitos/01-normalizados/
   ↓
-specs/*/spec.md
+docs/requisitos/04-specs/SPEC-*.md
   ↓
-specs/*/plan.md
+docs/requisitos/05-plans/PLAN-*.md
   ↓
-specs/*/tasks.md
+frontend/prototipo-react-fase4/src/ + backend/*
   ↓
 Código
 ```

@@ -19,7 +19,13 @@ function withTimeout(timeoutMs) {
 
 export async function requestJson(path, { method = 'GET', body, timeoutMs = 5000 } = {}) {
   const timeout = withTimeout(timeoutMs);
-  const url = `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const baseHasApiSuffix = /\/api$/i.test(API_BASE_URL);
+  const pathHasApiPrefix = /^\/api(\/|$)/i.test(normalizedPath);
+  const safePath = baseHasApiSuffix && pathHasApiPrefix
+    ? normalizedPath.replace(/^\/api/i, '') || '/'
+    : normalizedPath;
+  const url = `${API_BASE_URL}${safePath}`;
 
   try {
     const response = await fetch(url, {

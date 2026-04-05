@@ -1,6 +1,22 @@
+import { useEffect, useState } from 'react';
 import Badge from '../components/Badge';
+import { listarEquipamentosComFallback } from '../modules/m06-equipamentos-salas/m06Gateway';
 
 export default function EquipamentosScreen() {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    listarEquipamentosComFallback().then((result) => {
+      if (mounted) {
+        setRows(result.rows);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <div className="grid split-8-4">
       <section className="panel">
@@ -8,9 +24,14 @@ export default function EquipamentosScreen() {
         <table className="compact-table">
           <thead><tr><th>Equipamento</th><th>Unidade</th><th>Status</th><th>Próx. manutenção</th></tr></thead>
           <tbody>
-            <tr><td>Leg Press 45</td><td>Centro</td><td><Badge type="active">Ativo</Badge></td><td>12/04</td></tr>
-            <tr><td>Esteira X900</td><td>Zona Sul</td><td><Badge type="alert">Revisão</Badge></td><td>06/04</td></tr>
-            <tr><td>Banco Supino Reto</td><td>Zona Norte</td><td><Badge type="debt">Inativo</Badge></td><td>Em manutenção</td></tr>
+            {rows.map((row) => (
+              <tr key={`${row.nome}-${row.unidade}`}>
+                <td>{row.nome}</td>
+                <td>{row.unidade}</td>
+                <td><Badge type={row.status === 'Ativo' ? 'active' : row.status === 'Revisao' ? 'alert' : 'debt'}>{row.status}</Badge></td>
+                <td>{row.proximaManutencao || '-'}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </section>

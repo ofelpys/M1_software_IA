@@ -5,10 +5,13 @@ import DashboardScreen from './screens/DashboardScreen';
 import RecepcaoScreen from './screens/RecepcaoScreen';
 import CadastroScreen from './screens/CadastroScreen';
 import FinanceiroScreen from './screens/FinanceiroScreen';
+import RelatoriosScreen from './screens/RelatoriosScreen';
+import AvaliacaoScreen from './screens/AvaliacaoScreen';
 import ProfessoresScreen from './screens/ProfessoresScreen';
 import EquipamentosScreen from './screens/EquipamentosScreen';
 import ComunicacaoScreen from './screens/ComunicacaoScreen';
 import OperacaoScreen from './screens/OperacaoScreen';
+import InsumosScreen from './screens/InsumosScreen';
 import { checkApiHealth } from './services/apiHealth';
 
 const titles = {
@@ -16,8 +19,11 @@ const titles = {
   recepcao: 'Recepção e Check-in Rápido',
   cadastro: 'Cadastro e Validação',
   financeiro: 'Painel Financeiro',
+  relatorios: 'Relatórios e Dashboards',
+  avaliacao: 'Avaliação e Evolução',
   professores: 'Gestão de Professores',
   equipamentos: 'Equipamentos e Salas',
+  insumos: 'Insumos e Produtos',
   comunicacao: 'Comunicação e Notificações',
   operacao: 'Checklist de Operação',
 };
@@ -27,8 +33,11 @@ const actionLabels = {
   recepcao: 'Novo check-in',
   cadastro: 'Novo cadastro',
   financeiro: 'Novo lançamento',
+  relatorios: 'Novo relatório',
+  avaliacao: 'Nova avaliação',
   professores: 'Novo professor',
   equipamentos: 'Novo item',
+  insumos: 'Novo insumo',
   comunicacao: 'Novo comunicado',
   operacao: 'Nova tarefa',
 };
@@ -41,10 +50,16 @@ function renderScreen(key) {
       return <CadastroScreen />;
     case 'financeiro':
       return <FinanceiroScreen />;
+    case 'relatorios':
+      return <RelatoriosScreen />;
+    case 'avaliacao':
+      return <AvaliacaoScreen />;
     case 'professores':
       return <ProfessoresScreen />;
     case 'equipamentos':
       return <EquipamentosScreen />;
+    case 'insumos':
+      return <InsumosScreen />;
     case 'comunicacao':
       return <ComunicacaoScreen />;
     case 'operacao':

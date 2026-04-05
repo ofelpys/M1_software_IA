@@ -7,6 +7,8 @@
 
 ---
 
+> Nota de escopo MVP: este processo de PR esta calibrado para a fase de MVP operacional. Exigencias de governanca/operacao enterprise sao tratadas como evolucao posterior.
+
 ## 🎯 O que é Processo de PR?
 
 **Pull Request (PR)** é um **fluxo controlado de revisão de código** antes de mergear mudanças para `main`. Este processo garante rastreabilidade **100% do RF ao Código** (RF → SPEC → PLAN → PR → Code). Garante:
@@ -23,6 +25,9 @@
 - Rastreabilidade COMPLETA: RF → SPEC → PLAN → PR → Code (quem mudou quê, quando, por quê, qual requisito)
 - Rollback fácil se problema é detectado
 - Governança: Todas decisões (constitution.md), padrões (patterns.md) e planos (8 PLANs Fase 3) respeitados
+
+> **Ambiente obrigatório**: Java 21 (LTS) + Maven instalado localmente no PATH (`mvn`).
+> Não versionar binários Maven em `tools/`.
 
 ---
 
@@ -96,7 +101,7 @@ Fase 4 (Prototyping)
 Fase 5 (Development)
   PRs com referência a PLAN-XXX → Java/React code implementaçao
       ↓
-PRODUCTION CODE
+MVP EM PRODUCAO TECNICA
 ```
 
 **Ao abrir PR, SEMPRE referencie qual RF → SPEC → PLAN está implementando!**
@@ -210,7 +215,7 @@ Quando estar pronto para review:
 ```bash
 # Antes de push, executar testes localmente
 npm run test:frontend  # Jest
-./mvnw test           # JUnit backend
+mvn -f backend/forca-total-api/pom.xml test  # JUnit backend
 
 # Se tudo passa, push
 git push origin feature/M02-login-jwt
@@ -298,7 +303,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: SonarQube Scan
         run: |
-          ./mvnw clean verify sonar:sonar \
+          mvn -f backend/forca-total-api/pom.xml clean verify sonar:sonar \
             -Dsonar.projectKey=forcatotal-m1 \
             -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
@@ -307,11 +312,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
       - name: Run JUnit Tests
-        run: ./mvnw test -DskipITs=true
+        run: mvn -f backend/forca-total-api/pom.xml test -DskipITs=true
       - name: Code Coverage Report
-        run: ./mvnw jacoco:report
+        run: mvn -f backend/forca-total-api/pom.xml jacoco:report
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
 

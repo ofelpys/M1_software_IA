@@ -3,8 +3,11 @@ const items = [
   { key: 'recepcao', label: 'Recepção', icon: '[RCP]' },
   { key: 'cadastro', label: 'Cadastro', icon: '[CAD]' },
   { key: 'financeiro', label: 'Financeiro', icon: '[FIN]' },
+  { key: 'relatorios', label: 'Relatórios', icon: '[REL]' },
+  { key: 'avaliacao', label: 'Avaliação', icon: '[AVL]' },
   { key: 'professores', label: 'Professores', icon: '[PRF]' },
   { key: 'equipamentos', label: 'Equipamentos', icon: '[EQP]' },
+  { key: 'insumos', label: 'Insumos', icon: '[INS]' },
   { key: 'comunicacao', label: 'Comunicação', icon: '[COM]' },
   { key: 'operacao', label: 'Operação', icon: '[OPS]' },
 ];

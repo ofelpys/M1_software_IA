@@ -5,6 +5,8 @@
 
 ---
 
+> Nota de escopo MVP: este indice consolida artefatos do ciclo atual de MVP. Referencias a escopo amplo/enterprise devem ser lidas como backlog evolutivo, nao como entrega atual.
+
 ## 📚 Estrutura de Documentação (Pirâmide)
 
 ```
@@ -306,7 +308,7 @@ docker/
 Tempo: 4-6 semanas | Equipe: 4-6 devs | Coverage: ≥80%
 ```
 
-**Propósito**: Código real em produção  
+**Propósito**: Código de MVP em produção técnica  
 **Leitura**: Devs, DevOps, QA
 
 ---
@@ -389,10 +391,10 @@ Fase 0: Governança ✅            ← CONCLUÍDA
 | 4 abr | 3 | Review técnico | Tech lead |
 | 5-7 abr | 4 | Prototyping (HTML/CSS/React stubs) | 1-2 devs |
 | 10-14 abr | 4 | Revisão com Jonathan | Jonathan + Team |
-| **17 abr+** | **5** | **Desenvolvimento real** | **4-6 devs** |
+| **17 abr+** | **5** | **Desenvolvimento de MVP operacional** | **4-6 devs** |
 | 26-31 maio | 5 | Staging + QA | Equipe + QA |
 | 7-14 junho | 5 | UAT (User Acceptance Tests) | Jonathan + Users |
-| **21 junho** | **LIVE** | **Go-Live!** | **Todos** |
+| **21 junho** | **MVP** | **Entrada em operacao assistida** | **Todos** |
 
 ---
 
@@ -405,7 +407,7 @@ Fase 0: Governança ✅            ← CONCLUÍDA
 ✅  Especificações do negócio (Fase 2)
 ✅  Decisões técnicas (Fase 3 - HOJE)
 ⏳ Protótipos visuais (Fase 4 - próximos dias)
-⏳ Código real (Fase 5 - próximas semanas)
+⏳ Código de MVP operacional (Fase 5 - próximas semanas)
 
 **Cada desenvolvedor pode pegar seu PLAN e começar a codificar com 0 ambiguidade.**
 

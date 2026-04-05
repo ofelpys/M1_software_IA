@@ -1,0 +1,288 @@
+openapi: 3.0.3
+info:
+  title: M1 Integration API - M01 M02 M08
+  version: 1.0.0
+  description: |
+    Contrato formal de integracao para fechamento da Fase 4.5.
+    Este documento consolida os contratos usados no frontend e os endpoints alvo dos PLANs.
+servers:
+  - url: http://localhost:8080
+    description: Local
+  - url: https://staging.forcatotal.local
+    description: Staging
+
+tags:
+  - name: M01 Cadastro e Acesso
+  - name: M02 Financeiro
+  - name: M08 Comunicacao
+
+paths:
+  /api/alunos:
+    post:
+      tags: [M01 Cadastro e Acesso]
+      summary: Criar aluno
+      operationId: createAluno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlunoCreateRequest'
+      responses:
+        '201':
+          description: Aluno criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlunoCreateResponse'
+        '400':
+          description: Payload invalido
+        '409':
+          description: CPF ja existente
+
+  /api/acesso/checkin:
+    post:
+      tags: [M01 Cadastro e Acesso]
+      summary: Registrar check-in
+      operationId: createCheckin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckinRequest'
+      responses:
+        '200':
+          description: Resultado do check-in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckinResponse'
+        '404':
+          description: Aluno nao encontrado
+
+  /api/acesso/{alunoId}/desbloquear:
+    post:
+      tags: [M02 Financeiro]
+      summary: Desbloquear acesso por inadimplencia
+      operationId: desbloquearAcesso
+      parameters:
+        - in: path
+          name: alunoId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesbloqueioRequest'
+      responses:
+        '200':
+          description: Desbloqueio registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DesbloqueioResponse'
+        '404':
+          description: Aluno nao encontrado
+
+  /api/comunicacoes/disparos:
+    post:
+      tags: [M08 Comunicacao]
+      summary: Disparar comunicacao segmentada
+      operationId: dispararComunicacao
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComunicacaoDisparoRequest'
+      responses:
+        '200':
+          description: Resultado do disparo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComunicacaoDisparoResponse'
+
+  /m01/alunos:
+    post:
+      tags: [M01 Cadastro e Acesso]
+      summary: Endpoint legado do prototipo (shim)
+      deprecated: true
+      x-migration-target: /api/alunos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlunoCreateRequest'
+      responses:
+        '200':
+          description: Compatibilidade temporaria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlunoCreateResponse'
+
+  /m01/checkins:
+    post:
+      tags: [M01 Cadastro e Acesso]
+      summary: Endpoint legado do prototipo (shim)
+      deprecated: true
+      x-migration-target: /api/acesso/checkin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckinRequest'
+      responses:
+        '200':
+          description: Compatibilidade temporaria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckinResponse'
+
+  /m02/inadimplencia/desbloqueios:
+    post:
+      tags: [M02 Financeiro]
+      summary: Endpoint legado do prototipo (shim)
+      deprecated: true
+      x-migration-target: /api/acesso/{alunoId}/desbloquear
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DesbloqueioRequest'
+      responses:
+        '200':
+          description: Compatibilidade temporaria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DesbloqueioResponse'
+
+  /m08/comunicacoes/disparos:
+    post:
+      tags: [M08 Comunicacao]
+      summary: Endpoint legado do prototipo (shim)
+      deprecated: true
+      x-migration-target: /api/comunicacoes/disparos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComunicacaoDisparoRequest'
+      responses:
+        '200':
+          description: Compatibilidade temporaria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComunicacaoDisparoResponse'
+
+components:
+  schemas:
+    AlunoCreateRequest:
+      type: object
+      required: [nome, cpf, email, plano]
+      properties:
+        nome:
+          type: string
+          minLength: 3
+          maxLength: 150
+        cpf:
+          type: string
+          pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
+        email:
+          type: string
+          format: email
+        plano:
+          type: string
+
+    AlunoCreateResponse:
+      type: object
+      required: [id, aluno]
+      properties:
+        id:
+          type: integer
+          format: int64
+        aluno:
+          type: object
+          required: [nome, cpf, email, plano]
+          properties:
+            nome:
+              type: string
+            cpf:
+              type: string
+            email:
+              type: string
+            plano:
+              type: string
+
+    CheckinRequest:
+      type: object
+      required: [cpf, status]
+      properties:
+        cpf:
+          type: string
+          pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
+        status:
+          type: string
+          enum: [ativo, inadimplente, bloqueado]
+
+    CheckinResponse:
+      type: object
+      required: [ok, message]
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+
+    DesbloqueioRequest:
+      type: object
+      required: [aluno, diasAtraso]
+      properties:
+        aluno:
+          type: string
+        diasAtraso:
+          type: integer
+          minimum: 0
+
+    DesbloqueioResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+
+    ComunicacaoDisparoRequest:
+      type: object
+      required: [canal, segmento, mensagem, ok]
+      properties:
+        canal:
+          type: string
+          enum: [Email, SMS, Push, App]
+        segmento:
+          type: string
+        mensagem:
+          type: string
+        ok:
+          type: boolean
+
+    ComunicacaoDisparoResponse:
+      type: object
+      required: [ok, message]
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string

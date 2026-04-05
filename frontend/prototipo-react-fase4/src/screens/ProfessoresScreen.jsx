@@ -1,6 +1,22 @@
+import { useEffect, useState } from 'react';
 import Badge from '../components/Badge';
+import { listarProfessoresComFallback } from '../modules/m05-professores/m05Gateway';
 
 export default function ProfessoresScreen() {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    listarProfessoresComFallback().then((result) => {
+      if (mounted) {
+        setRows(result.rows);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <div className="grid split-8-4">
       <section className="panel">
@@ -8,9 +24,14 @@ export default function ProfessoresScreen() {
         <table className="compact-table">
           <thead><tr><th>Professor</th><th>Especialidade</th><th>Status</th><th>Comissão</th></tr></thead>
           <tbody>
-            <tr><td>João Gomes</td><td>Musculação</td><td><Badge type="active">Ativo</Badge></td><td>R$ 3.420</td></tr>
-            <tr><td>Carla Souza</td><td>Pilates</td><td><Badge type="premium">Plano</Badge></td><td>R$ 2.980</td></tr>
-            <tr><td>Marcos Ferreira</td><td>Funcional</td><td><Badge type="trial">Trial</Badge></td><td>R$ 1.210</td></tr>
+            {rows.map((row) => (
+              <tr key={`${row.nome}-${row.especialidade}`}>
+                <td>{row.nome}</td>
+                <td>{row.especialidade}</td>
+                <td><Badge type="active">{row.status}</Badge></td>
+                <td>R$ {Number(row.comissao).toLocaleString('pt-BR')}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </section>

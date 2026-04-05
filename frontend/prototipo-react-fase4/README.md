@@ -2,6 +2,12 @@
 
 Base React inicial para transição da Fase 4 para Fase 5.
 
+## Escopo MVP
+
+Este frontend e um prototipo funcional de MVP para validar experiencia de uso, navegacao e fluxos criticos.
+
+Nao e, nesta etapa, um produto enterprise completo (ex.: design system corporativo consolidado, internacionalizacao ampla, acessibilidade em nivel de certificacao e operacao multi-tenant em larga escala).
+
 ## Como rodar
 
 1. npm install
@@ -12,7 +18,8 @@ Base React inicial para transição da Fase 4 para Fase 5.
 
 1. Definir variáveis no PowerShell:
   - $env:RUN_REAL_API_TESTS="true"
-  - $env:REAL_API_BASE_URL="http://localhost:8080/api"
+  - $env:REAL_API_BASE_URL="http://localhost:8080"
+  - $env:VITE_API_ROUTE_PROFILE="canonical"
 2. Executar:
   - npm run test:integration:real
 
@@ -25,6 +32,7 @@ Observações:
 
 - Último snapshot: reports/integration-test-report-latest.md
 - Snapshot datado: reports/integration-test-report-2026-04-04.md
+- Consistência visual (mapa de telas): reports/visual-consistency-report-2026-04-05.md
 
 ## API (passo 2)
 
@@ -33,6 +41,16 @@ Observações:
 - Endpoint de saúde da API: VITE_API_HEALTH_PATH (padrão: /health)
 - Exemplo (PowerShell): $env:VITE_API_HEALTH_PATH="/actuator/health"
 - Se a API não responder, o app usa fallback automático para mock.
+- Politica central de fallback em `src/services/integrationPolicy.js`:
+  - `VITE_API_FALLBACK_MODE=auto|strict`
+  - `VITE_API_FALLBACK_M01=auto|strict`
+  - `VITE_API_FALLBACK_M02=auto|strict`
+  - `VITE_API_FALLBACK_M08=auto|strict`
+  - `VITE_RUNTIME_ENV=development|production` (producao promove `auto` para `strict`)
+- Compatibilidade legado: `VITE_API_STRICT_MODE=true` continua valido para M01.
+- Perfil de rotas em `src/services/apiRoutes.js`:
+  - `VITE_API_ROUTE_PROFILE=legacy` (padrao atual)
+  - `VITE_API_ROUTE_PROFILE=canonical` (alvo de Fase 5, endpoints `/api/*`)
 - Tipos de fallback padronizados no feedback:
   - timeout: API indisponível por tempo de resposta excedido
   - network: API indisponível por falha de conexão
@@ -49,6 +67,23 @@ Observações:
   - recepção/check-in rápido
   - inadimplência/desbloqueio
   - comunicação com sucesso/falha
+
+## Mapa de Telas (M01-M08)
+
+- Dashboard executivo: DashboardScreen
+- M01 Cadastro e Acesso: CadastroScreen + RecepcaoScreen
+- M02 Financeiro: FinanceiroScreen
+- M03 Relatórios e Dashboards: RelatoriosScreen
+- M04 Avaliação e Evolução: AvaliacaoScreen
+- M05 Professores: ProfessoresScreen
+- M06 Equipamentos e Salas: EquipamentosScreen
+- M07 Insumos e Produtos: InsumosScreen
+- M08 Comunicação e Notificações: ComunicacaoScreen
+- Operação e checklist técnico: OperacaoScreen
+
+Validação de consistência menu/título/tela:
+- Status: PASS
+- Evidência: reports/visual-consistency-report-2026-04-05.md
 
 ## Evolução (passos executados)
 
@@ -78,6 +113,12 @@ Observações:
 - Passo 2 (evoluído): Modo estrito para persistência real no M01
   - Variável: VITE_API_STRICT_MODE=true
   - Sem fallback no M01 quando API estiver indisponível
+
+- Passo 4 (concluído): Fechamento Fase 4.5 para entrada da Fase 5
+  - OpenAPI formal: docs/requisitos/04-specs/OPENAPI-M01-M02-M08.yaml
+  - Matriz de rotas: docs/requisitos/02-mapa/matriz-alinhamento-rotas-fase4-5.md
+  - DoR da Fase 5: docs/requisitos/05-plans/DOR-FASE-5-go-live-readiness.md
+  - Politica de fallback central aplicada em M01, M02 e M08
 
 - Passo 3 (concluído): Teste de integração do fluxo crítico
   - Arquivo: tests/integration/critical-flow.test.mjs

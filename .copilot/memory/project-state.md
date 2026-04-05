@@ -1,8 +1,8 @@
 # PROJECT-STATE.MD — Status Atual do Projeto M1
 
-> **Última atualização**: 4 de abril de 2026, 19:45 UTC  
-> **Versão**: 1.5-FASE4-REACT-SKELETON  
-> **Fase Atual**: Fase 1 ✅ + Fase 2 ✅ + Fase 3 ✅ + Fase 4 🚧 EM ANDAMENTO
+> **Última atualização**: 5 de abril de 2026, 15:05 UTC  
+> **Versão**: 1.6-FASE4.5-INTEGRATION-READINESS  
+> **Fase Atual**: Fase 1 ✅ + Fase 2 ✅ + Fase 3 ✅ + Fase 4.5 ✅ + Fase 5 🚧 EM ANDAMENTO
 
 ---
 
@@ -13,7 +13,7 @@
 | **Projeto** | Rede Força Total Academias (M1) |
 | **Proprietário** | Jonathan Rodrigues Barbosa |
 | **Stack** | React + Spring Boot + PostgreSQL |
-| **Fase** | 1 ✅ + 2 ✅ + 3 ✅ + **4 🚧 EM ANDAMENTO** |
+| **Fase** | 1 ✅ + 2 ✅ + 3 ✅ + **4.5 ✅ FECHADA** + 5 🚧 |
 | **Bloqueadores** | 🟢 ZERO (todas 8 DUVs/DP resolvidas 2 abr) |
 | **Risco Overall** | 🟢 BAIXO (todas decisões confirmadas) |
 | **Pronto para Dev** | 🟢 100% (8 SPECs + 8 PLANs criados, 70 RFs rastreados) |
@@ -216,13 +216,43 @@ Arquivos gerados:
 - frontend/prototipo-react-fase4/README.md
 ```
 
-### Fase 5 — Implementação ❌ NÃO INICIADA
+### Fase 4.5 — Integration Readiness ✅ COMPLETA (5 de abril)
 
 ```
-❌ Backend Java Spring Boot
-❌ Frontend React
-❌ Database migrations + procedures
-❌ Integration tests
+✅ Contrato formal OpenAPI criado (M01, M02, M08)
+✅ Matriz de alinhamento de rotas frontend x PLAN publicada
+✅ Politica central de fallback implementada (M01/M02/M08)
+✅ Perfil de rotas legacy/canonical implementado para transicao
+✅ DoR de entrada da Fase 5 publicado
+✅ Teste real local validado (RUN_REAL_API_TESTS=true + REAL_API_BASE_URL=http://localhost:8080)
+
+Arquivos gerados/atualizados:
+- docs/requisitos/04-specs/OPENAPI-M01-M02-M08.yaml
+- docs/requisitos/02-mapa/matriz-alinhamento-rotas-fase4-5.md
+- docs/requisitos/05-plans/DOR-FASE-5-go-live-readiness.md
+- frontend/prototipo-react-fase4/src/services/integrationPolicy.js
+- frontend/prototipo-react-fase4/src/services/apiRoutes.js
+- frontend/prototipo-react-fase4/src/modules/m01-cadastro-acesso/m01Gateway.js
+- frontend/prototipo-react-fase4/src/modules/m02-financeiro/m02Gateway.js
+- frontend/prototipo-react-fase4/src/modules/m08-comunicacao/m08Gateway.js
+```
+
+### Fase 5 — Implementação 🚧 INICIADA (5 de abril)
+
+```
+✅ Backend Java Spring Boot (scaffold canônico criado)
+✅ DTOs canônicos M01/M02/M08 implementados
+✅ Endpoints /api canônicos implementados
+✅ Shim legado de transição implementado
+✅ Flyway baseline inicial (V001 a V004)
+✅ Integration test real API validado localmente (perfil canonical)
+✅ Maven local provisionado em tools/apache-maven-3.9.9
+✅ Hardening inicial com tratamento global de excecoes da API
+✅ Pacote inicial de endpoint adicional M03 (`GET /api/relatorios/kpis`)
+✅ Pipeline CI inicial criada para backend + frontend integration
+✅ Endpoints operacionais minimos publicados para M04, M05, M06 e M07 (GET/POST)
+✅ M02 expandido com CRUD minimo de pagamentos
+✅ M08 expandido com notificacoes e preferencias por usuario
 ❌ Deploy infrastructure
 ```
 

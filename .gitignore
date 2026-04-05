@@ -1,0 +1,9 @@
+# Maven local (nao versionar binarios/ferramentas)
+tools/apache-maven-*/
+tools/apache-maven-*.zip
+
+# Build artifacts (backend Java)
+backend/forca-total-api/target/
+**/target/
+.tools/
+.vscode/

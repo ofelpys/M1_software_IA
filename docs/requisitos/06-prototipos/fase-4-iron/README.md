@@ -4,6 +4,12 @@ Data: 4 de abril de 2026
 Status: Em andamento (Rodada 3 aplicada)
 Base: PLAN-001 a PLAN-008
 
+## Escopo MVP
+
+Este pacote existe para validacao visual e funcional de MVP.
+
+Nao deve ser interpretado como software enterprise final; e um artefato de prototipagem para acelerar decisoes de produto e implementacao incremental.
+
 ## Escopo deste pacote
 
 - Protótipo navegável em HTML/CSS/JS para validação rápida.

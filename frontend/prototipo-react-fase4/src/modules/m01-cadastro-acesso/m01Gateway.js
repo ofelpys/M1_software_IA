@@ -8,11 +8,7 @@ import {
   parseM01AlunoCreateResponse,
   parseM01CheckinResponse,
 } from '../../contracts/m01.contract.js';
-import { getEnv } from '../../services/env.js';
-
-function isStrictApiMode() {
-  return String(getEnv('VITE_API_STRICT_MODE', '')).toLowerCase() === 'true';
-}
+import { isStrictFallback } from '../../services/integrationPolicy.js';
 
 function normalizeApiSave(payload, data) {
   return {
@@ -37,11 +33,11 @@ export async function salvarAlunoComFallback(payload) {
     const parsed = parseM01AlunoCreateResponse(data);
     return normalizeApiSave(normalizedPayload, parsed);
   } catch (error) {
-    if (isStrictApiMode()) {
+    if (isStrictFallback('m01')) {
       return {
         ok: false,
         source: 'api-error',
-        error: `${getApiErrorMessage(error)} Modo estrito ativo: operação não foi persistida no backend.`,
+        error: `${getApiErrorMessage(error)} Modo estrito ativo: operacao nao foi persistida no backend.`,
       };
     }
 
@@ -81,10 +77,10 @@ export async function checkinComFallback(payload) {
       source: 'api',
     };
   } catch (error) {
-    if (isStrictApiMode()) {
+    if (isStrictFallback('m01')) {
       return {
         type: 'error-box',
-        text: `${getApiErrorMessage(error)} Modo estrito ativo: check-in não foi persistido no backend.`,
+        text: `${getApiErrorMessage(error)} Modo estrito ativo: check-in nao foi persistido no backend.`,
         source: 'api-error',
       };
     }

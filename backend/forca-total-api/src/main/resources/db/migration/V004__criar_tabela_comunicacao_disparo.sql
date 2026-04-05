@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS comunicacao_disparo (
+  disparo_id BIGSERIAL PRIMARY KEY,
+  canal VARCHAR(30) NOT NULL,
+  segmento VARCHAR(120) NOT NULL,
+  mensagem TEXT NOT NULL,
+  ok_solicitado BOOLEAN NOT NULL,
+  ok_processado BOOLEAN NOT NULL,
+  resposta VARCHAR(255) NOT NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
