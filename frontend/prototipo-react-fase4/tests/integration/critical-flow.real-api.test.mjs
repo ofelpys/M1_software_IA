@@ -24,6 +24,7 @@ test('fluxo crítico em API real (staging)', { skip: !(runRealApiTests && baseUr
     cpf,
     email: `teste.staging.${ts}@mailinator.com`,
     plano: 'Mensal',
+    unidade: 'Centro',
   });
 
   assert.equal(cadastro.ok, true, `Cadastro falhou: ${cadastro.error || 'sem detalhe'}`);

@@ -5,12 +5,14 @@ function assertObject(value, name) {
 }
 
 export function buildM01AlunoCreateRequest(payload) {
+  const unidade = String(payload?.unidade || '').trim() || 'Centro';
+
   return {
     nome: String(payload?.nome || '').trim(),
     cpf: String(payload?.cpf || '').trim(),
     email: String(payload?.email || '').trim(),
     plano: String(payload?.plano || '').trim(),
-    unidade: String(payload?.unidade || '').trim(),
+    unidade,
   };
 }
 
