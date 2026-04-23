@@ -40,3 +40,13 @@ export async function desbloquearInadimplenteComFallback(row) {
     };
   }
 }
+
+export async function excluirAlunoPermanente(alunoId) {
+  const resolvedPath = String(apiRoutes.m02.excluirAlunoPermanente).includes('{alunoId}')
+    ? String(apiRoutes.m02.excluirAlunoPermanente).replace('{alunoId}', String(alunoId || 0))
+    : apiRoutes.m02.excluirAlunoPermanente;
+
+  await requestJson(resolvedPath, {
+    method: 'DELETE',
+  });
+}

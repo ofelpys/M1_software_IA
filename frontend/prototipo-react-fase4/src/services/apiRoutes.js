@@ -9,6 +9,7 @@ const routeProfiles = {
     m02: {
       desbloqueioInadimplencia: '/m02/inadimplencia/desbloqueios',
       pagamentos: '/api/pagamentos',
+      excluirAlunoPermanente: '/api/financeiro/alunos/{alunoId}/permanente',
     },
     m03: {
       relatoriosKpis: '/api/relatorios/kpis',
@@ -38,6 +39,7 @@ const routeProfiles = {
     m02: {
       desbloqueioInadimplencia: '/api/acesso/{alunoId}/desbloquear',
       pagamentos: '/api/pagamentos',
+      excluirAlunoPermanente: '/api/financeiro/alunos/{alunoId}/permanente',
     },
     m03: {
       relatoriosKpis: '/api/relatorios/kpis',

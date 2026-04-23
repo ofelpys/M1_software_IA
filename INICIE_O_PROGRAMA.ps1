@@ -3,7 +3,7 @@ param(
   [int]$DbPort = 5432,
   [string]$DbName = 'forca_total',
   [string]$DbUser = 'postgres',
-  [string]$DbPassword = 'postgres',
+  [securestring]$DbSecret = (ConvertTo-SecureString 'postgres' -AsPlainText -Force),
   [int]$ApiPort = 8080,
   [int]$FrontendPort = 5173,
   [switch]$SkipBackend,
@@ -13,8 +13,9 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
+$DbSecretPlain = [System.Net.NetworkCredential]::new('', $DbSecret).Password
 
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+$repoRoot = (Resolve-Path $PSScriptRoot).Path
 $logsDir = Join-Path $repoRoot 'logs\local-stack'
 $stateFile = Join-Path $env:TEMP 'm1-local-stack-pids.json'
 
@@ -58,9 +59,15 @@ function Resolve-PgBin {
 }
 
 function Resolve-MavenCommand {
-  $localMvn = Join-Path $repoRoot '.tools\apache-maven\bin\mvn.cmd'
-  if (Test-Path $localMvn) {
-    return $localMvn
+  $localMavenCandidates = @(
+    (Join-Path $repoRoot '.tools\apache-maven\bin\mvn.cmd'),
+    (Join-Path $repoRoot 'tools\apache-maven-3.9.9\bin\mvn.cmd')
+  )
+
+  foreach ($localMvn in $localMavenCandidates) {
+    if (Test-Path $localMvn) {
+      return $localMvn
+    }
   }
 
   $mvnCmd = Get-Command mvn.cmd -ErrorAction SilentlyContinue
@@ -99,7 +106,7 @@ function Resolve-Java21Home {
   return $null
 }
 
-function Ensure-FrontendDeps {
+function Install-FrontendDeps {
   $frontendDir = Join-Path $repoRoot 'frontend\prototipo-react-fase4'
   $nodeModules = Join-Path $frontendDir 'node_modules'
   if (Test-Path $nodeModules) {
@@ -190,7 +197,7 @@ if ($service.Status -ne 'Running') {
 
 Ok "PostgreSQL ativo: $($service.Name)"
 
-$env:PGPASSWORD = $DbPassword
+$env:PGPASSWORD = $DbSecretPlain
 $psql = Join-Path $pgBin 'psql.exe'
 $createdb = Join-Path $pgBin 'createdb.exe'
 
@@ -222,7 +229,7 @@ if (-not $SkipBackend) {
     "set `"PATH=%JAVA_HOME%\\bin;%PATH%`"",
     "set `"DB_URL=jdbc:postgresql://${DbHost}:$DbPort/$DbName`"",
     "set `"DB_USERNAME=$DbUser`"",
-    "set `"DB_PASSWORD=$DbPassword`"",
+    "set `"DB_PASSWORD=$DbSecretPlain`"",
     "set `"PORT=$ApiPort`"",
     "set `"SPRING_PROFILES_ACTIVE=default`"",
     "`"$mvnCmdPath`" -f backend/forca-total-api/pom.xml spring-boot:run"
@@ -240,7 +247,7 @@ if (-not $SkipBackend) {
 }
 
 if (-not $SkipFrontend) {
-  Ensure-FrontendDeps
+  Install-FrontendDeps
 
   $frontendDir = Join-Path $repoRoot 'frontend\prototipo-react-fase4'
   $frontendOut = Join-Path $logsDir 'frontend.out.log'

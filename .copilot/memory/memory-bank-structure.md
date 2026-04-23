@@ -1,75 +1,61 @@
-# MEMORY-BANK-STRUCTURE.MD — Estrutura e Navegação
+# MEMORY-BANK-STRUCTURE.MD — Estrutura e Consistencia
 
-> **Propósito**: Mapa atualizado dos artefatos reais do Memory Bank  
-> **Mantido por**: Copilot
+> Ultima atualizacao: 23 de abril de 2026
 
 ---
 
-## Estrutura Atual
+## 1. Estrutura oficial
 
 ```
 .copilot/
-├── core/
-│   ├── rules.md
-│   ├── contexts.md
-│   └── patterns.md
-│
-├── memory/
-│   ├── constitution.md
-│   ├── decision-log.md
-│   ├── duv-resolutions.md
-│   ├── fase-2-completion-summary.md
-│   ├── memory-bank-structure.md
-│   └── project-state.md
-│
-├── workflows/
-│   ├── plan.md
-│   ├── FASE-3-PLANNING.md
-│   └── FASE-3-RESUMO-EXECUTIVO.md
-│
-├── logs/
-│   └── task-log.md
-│
-└── README.md
+|- core/
+|  |- rules.md
+|  |- contexts.md
+|  `- patterns.md
+|- memory/
+|  |- constitution.md
+|  |- decision-log.md
+|  |- duv-resolutions.md
+|  |- fase-2-completion-summary.md
+|  |- memory-bank-structure.md
+|  `- project-state.md
+|- workflows/
+|  |- plan.md
+|  |- FASE-3-PLANNING.md
+|  `- FASE-3-RESUMO-EXECUTIVO.md
+`- logs/
+   `- task-log.md
 ```
 
 ---
 
-## Ordem Recomendada de Leitura
+## 2. Papel de cada arquivo chave
 
-1. `.copilot/memory/constitution.md`
-2. `.copilot/core/rules.md`
-3. `.copilot/memory/decision-log.md`
-4. `.copilot/memory/project-state.md`
-
-Leitura complementar por necessidade:
-- Implementação: `.copilot/core/patterns.md`
-- Negócio: `.copilot/core/contexts.md`
-- Planejamento de execução: `.copilot/workflows/plan.md`
+- `project-state.md`: snapshot operacional canonico.
+- `constitution.md`: decisoes supremas e governanca.
+- `decision-log.md`: historico de decisoes com impacto.
+- `duv-resolutions.md`: status das duvidas resolvidas.
+- `plan.md`: estado das fases e proximo sequenciamento.
+- `task-log.md`: historico de marcos/sessoes.
 
 ---
 
-## Responsabilidade por Arquivo
+## 3. Regra de sincronizacao obrigatoria
 
-- `constitution.md`: decisões supremas e governança.
-- `decision-log.md`: histórico e racional das decisões.
-- `duv-resolutions.md`: resoluções das DUVs e impactos.
-- `project-state.md`: snapshot operacional atual.
-- `task-log.md`: histórico de sessões e marcos.
-- `plan.md`: estado das fases e próximos passos.
+Se o status do projeto mudar, atualizar em conjunto:
+1. `project-state.md`
+2. `plan.md`
+3. `README.md` da `.copilot`
+4. `task-log.md`
 
----
-
-## Regras de Persistência
-
-Quando houver mudança relevante:
-1. Registrar decisão em `decision-log.md`.
-2. Atualizar `project-state.md` com impacto e status.
-3. Registrar fechamento da sessão em `task-log.md`.
-4. Se a decisão for estrutural, atualizar `constitution.md`.
+Quando houver decisao nova:
+5. `decision-log.md`
+6. `constitution.md` (se for decisao estrutural)
 
 ---
 
-## Encerramento
+## 4. Integridade
 
-Este arquivo deve sempre refletir os artefatos que realmente existem na pasta `.copilot`.
+- Evitar manter status de fase conflitante entre arquivos.
+- Evitar referencias a caminhos inexistentes.
+- Priorizar fatos verificaveis por arquivo de codigo/teste/script.

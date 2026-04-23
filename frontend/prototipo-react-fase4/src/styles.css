@@ -200,6 +200,12 @@ h1, h2, h3 {
 .compact-table tbody tr:hover { background: #1f1f1f; }
 
 .avatar-cell { position: relative; display: inline-flex; align-items: center; gap: 8px; }
+.aluno-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 .avatar {
   width: 30px;
   height: 30px;
@@ -220,6 +226,15 @@ h1, h2, h3 {
 }
 .presence.online { background: var(--ok); }
 .presence.offline { background: #777777; }
+
+.status-editor-cell {
+  display: grid;
+  gap: 6px;
+}
+.status-editor-cell select {
+  padding: 6px 8px;
+  font-size: 12px;
+}
 
 .badge {
   display: inline-flex;
@@ -290,6 +305,49 @@ small { color: #ff8f8f; }
 .error-box { border-color: #7a2e2e; color: #ff8f8f; }
 .info-box { border-color: #2e4f7d; color: #86b5ff; }
 
+.detail-card {
+  margin-top: 12px;
+  border: 1px solid #3a3a3a;
+  background: #141414;
+  padding: 12px;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 7, 7, 0.82);
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+.detail-modal {
+  width: min(920px, 96vw);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid #3a3a3a;
+  background: #141414;
+  padding: 14px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.46);
+}
+.detail-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.detail-grid {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.detail-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
 .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .checklist { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
 
@@ -314,5 +372,17 @@ small { color: #ff8f8f; }
   .topbar-right {
     width: 100%;
     justify-content: space-between;
+  }
+  .aluno-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .detail-modal {
+    width: 100%;
+    max-height: 94vh;
+    padding: 12px;
   }
 }

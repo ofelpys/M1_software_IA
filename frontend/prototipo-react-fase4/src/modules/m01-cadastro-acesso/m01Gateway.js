@@ -94,6 +94,29 @@ export async function checkinComFallback(payload) {
   }
 }
 
+export async function atualizarStatusAlunoComFallback(alunoId, aluno, status) {
+  const normalizedPayload = buildM01AlunoCreateRequest({
+    ...aluno,
+    cpf: formatCpf(aluno?.cpf),
+    status,
+  });
+
+  try {
+    const data = await requestJson(`${apiRoutes.m01.alunos}/${alunoId}`, {
+      method: 'PUT',
+      body: normalizedPayload,
+    });
+    const parsed = parseM01AlunoCreateResponse(data);
+    return normalizeApiSave(normalizedPayload, parsed);
+  } catch (error) {
+    return {
+      ok: false,
+      source: 'api-error',
+      error: `${getApiErrorMessage(error)} Modo estrito ativo: status nao foi persistido no backend.`,
+    };
+  }
+}
+
 export async function listarAlunos() {
   const data = await requestJson(apiRoutes.m01.alunos, { method: 'GET' });
   if (!Array.isArray(data)) {

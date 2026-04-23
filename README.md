@@ -1,5 +1,12 @@
 # M1 - Rede Forca Total Academias
 
+> **Importante (setup local):** este repositorio **nao e zero-config**. Quem fizer `git clone` so conseguira executar o projeto normalmente apos instalar e configurar os pre-requisitos locais (Java 21, Maven >= 3.9, Node.js/npm e PostgreSQL).
+
+> **Configuracao obrigatoria do PostgreSQL (usuario local):** antes de iniciar, cada usuario deve informar **a propria rota do PostgreSQL** (host/porta/banco) e **as proprias credenciais** (usuario e senha) usadas na sua instalacao local do PostgreSQL.
+>
+> Exemplo:
+> `./INICIE_O_PROGRAMA.ps1 -DbHost "localhost" -DbPort 5432 -DbName "forca_total" -DbUser "SEU_USUARIO" -DbSecret (ConvertTo-SecureString "SUA_SENHA" -AsPlainText -Force)`
+
 > **Ambiente recomendado (obrigatorio para contribuicao):** use **Maven instalado localmente** (PATH/SDKMAN/Chocolatey etc.). O repositorio **nao deve versionar binarios do Maven** em `tools/`.
 
 > **Java LTS:** o projeto esta padronizado em **Java 21 (LTS)**, que e a LTS mais recente suportada de forma estavel pelo stack atual.
@@ -10,7 +17,7 @@
 Para subir a stack local completa (PostgreSQL + backend + frontend), execute:
 
 ```powershell
-./scripts/start-local-stack.ps1
+./INICIE_O_PROGRAMA.ps1
 ```
 
 O script:
@@ -26,7 +33,7 @@ A inicializacao do schema e automatica no boot do backend via Flyway (`spring.fl
 Se quiser preparar somente o banco antes de subir toda a stack, rode o mesmo script sem backend/frontend:
 
 ```powershell
-./scripts/start-local-stack.ps1 -SkipBackend -SkipFrontend
+./INICIE_O_PROGRAMA.ps1 -SkipBackend -SkipFrontend
 ```
 
 Projeto de software para gestao centralizada de uma rede de 5 academias, com foco em rastreabilidade ponta a ponta: requisito -> SPEC -> PLAN -> prototipo -> implementacao.
@@ -145,11 +152,11 @@ Script:
 Para subir tudo em uma vez (com validacao do PostgreSQL, backend em `:8080` e frontend em `:5173`):
 
 ```powershell
-./scripts/start-local-stack.ps1
+./INICIE_O_PROGRAMA.ps1
 ```
 
 Script:
-- [scripts/start-local-stack.ps1](scripts/start-local-stack.ps1)
+- [INICIE_O_PROGRAMA.ps1](INICIE_O_PROGRAMA.ps1)
 
 ## Memory Bank (.copilot)
 

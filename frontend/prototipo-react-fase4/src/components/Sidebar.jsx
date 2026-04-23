@@ -3,13 +3,13 @@ const items = [
   { key: 'recepcao', label: 'Recepção', icon: '[RCP]' },
   { key: 'cadastro', label: 'Cadastro', icon: '[CAD]' },
   { key: 'financeiro', label: 'Financeiro', icon: '[FIN]' },
-  { key: 'relatorios', label: 'Relatórios', icon: '[REL]' },
-  { key: 'avaliacao', label: 'Avaliação', icon: '[AVL]' },
-  { key: 'professores', label: 'Professores', icon: '[PRF]' },
   { key: 'equipamentos', label: 'Equipamentos', icon: '[EQP]' },
-  { key: 'insumos', label: 'Insumos', icon: '[INS]' },
-  { key: 'comunicacao', label: 'Comunicação', icon: '[COM]' },
-  { key: 'operacao', label: 'Operação', icon: '[OPS]' },
+  { key: 'relatorios', label: 'Relatórios [Estático]', icon: '[REL]' },
+  { key: 'avaliacao', label: 'Avaliação [Estático]', icon: '[AVL]' },
+  { key: 'professores', label: 'Professores [Estático]', icon: '[PRF]' },
+  { key: 'insumos', label: 'Insumos [Estático]', icon: '[INS]' },
+  { key: 'comunicacao', label: 'Comunicação [Estático]', icon: '[COM]' },
+  { key: 'operacao', label: 'Operação [Estático]', icon: '[OPS]' },
 ];
 
 export default function Sidebar({ active, onChange }) {
@@ -19,7 +19,7 @@ export default function Sidebar({ active, onChange }) {
         <span className="brand-mark">FT</span>
         <div>
           <h1>Força Total</h1>
-          <p>React - Fase 4</p>
+          <p>Sistema Operacional</p>
         </div>
       </div>
 

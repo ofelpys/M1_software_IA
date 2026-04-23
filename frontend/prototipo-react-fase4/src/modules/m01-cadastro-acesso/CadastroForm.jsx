@@ -6,8 +6,14 @@ const initial = {
   nome: '',
   cpf: '',
   email: '',
+  telefone: '',
+  dataNascimento: '',
+  endereco: '',
+  objetivo: '',
+  contatoEmergencia: '',
   plano: 'Mensal',
   unidade: 'Centro',
+  status: 'Ativo',
 };
 
 export default function CadastroForm({ onSaved, editAluno }) {
@@ -24,8 +30,14 @@ export default function CadastroForm({ onSaved, editAluno }) {
       nome: editAluno?.nome || '',
       cpf: editAluno?.cpf || '',
       email: editAluno?.email || '',
+      telefone: editAluno?.telefone || '',
+      dataNascimento: editAluno?.dataNascimento || '',
+      endereco: editAluno?.endereco || '',
+      objetivo: editAluno?.objetivo || '',
+      contatoEmergencia: editAluno?.contatoEmergencia || '',
       plano: editAluno?.plano || 'Mensal',
       unidade: editAluno?.unidade || 'Centro',
+      status: editAluno?.status || 'Ativo',
     });
   }, [editAluno]);
 
@@ -93,11 +105,31 @@ export default function CadastroForm({ onSaved, editAluno }) {
           <input type="email" value={form.email} onChange={(e) => onChange('email', e.target.value)} placeholder="nome@exemplo.com" />
         </label>
         <label>
+          Telefone
+          <input value={form.telefone} onChange={(e) => onChange('telefone', e.target.value)} placeholder="(11) 99999-9999" />
+        </label>
+        <label>
+          Data de nascimento
+          <input type="date" value={form.dataNascimento} onChange={(e) => onChange('dataNascimento', e.target.value)} />
+        </label>
+        <label>
+          Contato de emergência
+          <input value={form.contatoEmergencia} onChange={(e) => onChange('contatoEmergencia', e.target.value)} placeholder="Nome e telefone" />
+        </label>
+        <label>
+          Endereço
+          <input value={form.endereco} onChange={(e) => onChange('endereco', e.target.value)} placeholder="Rua, número, bairro" />
+        </label>
+        <label>
+          Objetivo
+          <input value={form.objetivo} onChange={(e) => onChange('objetivo', e.target.value)} placeholder="Hipertrofia, emagrecimento, condicionamento..." />
+        </label>
+        <label>
           Plano
           <select value={form.plano} onChange={(e) => onChange('plano', e.target.value)}>
-            <option>Mensal</option>
-            <option>Anual</option>
-            <option>Premium</option>
+            <option value="Mensal">Mensal - R$ 150,00</option>
+            <option value="Anual">Anual - R$ 120,00</option>
+            <option value="Premium">Premium - R$ 100,00</option>
           </select>
         </label>
         <label>

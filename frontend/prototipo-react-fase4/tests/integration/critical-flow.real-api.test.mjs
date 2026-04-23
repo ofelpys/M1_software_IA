@@ -32,7 +32,6 @@ test('fluxo crítico em API real (staging)', { skip: !(runRealApiTests && baseUr
 
   const checkin = await checkinComFallback({
     cpf,
-    status: 'ativo',
   });
   assert.equal(checkin.source, 'api');
   assert.equal(checkin.type, 'success-box');

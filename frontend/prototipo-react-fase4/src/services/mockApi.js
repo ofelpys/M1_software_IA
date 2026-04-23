@@ -5,10 +5,11 @@ function sleep(ms) {
 export async function checkinRapido({ cpf, status }) {
   await sleep(150);
   const value = cpf?.trim() || 'Não informado';
-  if (status === 'ativo') {
+  const normalizedStatus = String(status || 'ativo').toLowerCase();
+  if (normalizedStatus === 'ativo') {
     return { type: 'success-box', text: `Check-in liberado para CPF ${value}. Registro efetuado.` };
   }
-  if (status === 'inadimplente') {
+  if (normalizedStatus === 'inadimplente') {
     return { type: 'error-box', text: `Acesso negado para CPF ${value}. Motivo: inadimplência.` };
   }
   return { type: 'error-box', text: `Acesso bloqueado para CPF ${value}. Encaminhar coordenação.` };

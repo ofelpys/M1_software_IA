@@ -5,6 +5,7 @@ import com.forcatotal.m1.api.dto.DesbloqueioResponse;
 import com.forcatotal.m1.api.dto.PagamentoRequest;
 import com.forcatotal.m1.api.dto.PagamentoResponse;
 import com.forcatotal.m1.api.service.AcessoService;
+import com.forcatotal.m1.api.service.AlunoService;
 import com.forcatotal.m1.api.service.PagamentoService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -21,10 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class M02Controller {
 
   private final AcessoService acessoService;
+  private final AlunoService alunoService;
   private final PagamentoService pagamentoService;
 
-  public M02Controller(AcessoService acessoService, PagamentoService pagamentoService) {
+  public M02Controller(AcessoService acessoService, AlunoService alunoService, PagamentoService pagamentoService) {
     this.acessoService = acessoService;
+    this.alunoService = alunoService;
     this.pagamentoService = pagamentoService;
   }
 
@@ -57,6 +60,13 @@ public class M02Controller {
   @DeleteMapping("/api/pagamentos/{pagamentoId}")
   public ResponseEntity<Void> deletePagamento(@PathVariable Long pagamentoId) {
     return pagamentoService.softDelete(pagamentoId)
+        ? ResponseEntity.noContent().build()
+        : ResponseEntity.notFound().build();
+  }
+
+  @DeleteMapping("/api/financeiro/alunos/{alunoId}/permanente")
+  public ResponseEntity<Void> deleteAlunoPermanente(@PathVariable Long alunoId) {
+    return alunoService.hardDelete(alunoId)
         ? ResponseEntity.noContent().build()
         : ResponseEntity.notFound().build();
   }

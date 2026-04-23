@@ -19,14 +19,17 @@ public class AcessoService {
   }
 
   public CheckinResponse checkin(CheckinRequest request) {
-    boolean hasAluno = alunoService.existsByCpf(request.cpf());
-    boolean ok = hasAluno && !"inadimplente".equalsIgnoreCase(request.status()) && !"bloqueado".equalsIgnoreCase(request.status());
+    var statusAluno = alunoService.findStatusByCpf(request.cpf());
+    boolean hasAluno = statusAluno.isPresent();
+    String statusAtual = statusAluno.orElse("Nao encontrado");
+    boolean bloqueadoFinanceiro = "Inadimplente".equalsIgnoreCase(statusAtual) || "Bloqueado".equalsIgnoreCase(statusAtual);
+    boolean ok = hasAluno && !bloqueadoFinanceiro;
     String message;
 
     if (!hasAluno) {
       message = "Aluno nao encontrado para o CPF informado.";
-    } else if (!ok) {
-      message = "Check-in nao autorizado por status financeiro.";
+    } else if (bloqueadoFinanceiro) {
+      message = "Este aluno esta bloqueado por inadimplencia.";
     } else {
       message = "Check-in persistido no backend.";
     }
@@ -38,7 +41,7 @@ public class AcessoService {
             """,
         request.cpf(),
         request.cpf(),
-        request.status(),
+        statusAtual,
         ok,
         message);
 
@@ -46,6 +49,11 @@ public class AcessoService {
   }
 
   public DesbloqueioResponse desbloquear(Long alunoId, DesbloqueioRequest request) {
+    boolean alunoAtualizado = alunoService.updateStatus(alunoId, "Ativo");
+    if (!alunoAtualizado) {
+      return new DesbloqueioResponse("Aluno nao encontrado para desbloqueio. Verifique o alunoId informado.");
+    }
+
     jdbcTemplate.update(
         """
             INSERT INTO desbloqueio_acesso(aluno_id, aluno_nome, dias_atraso)
@@ -55,6 +63,6 @@ public class AcessoService {
         request.aluno(),
         request.diasAtraso());
 
-    return new DesbloqueioResponse("Desbloqueio registrado para alunoId=" + alunoId + " com " + request.diasAtraso() + " dias de atraso.");
+    return new DesbloqueioResponse("Desbloqueio registrado para alunoId=" + alunoId + " e status atualizado para Ativo.");
   }
 }

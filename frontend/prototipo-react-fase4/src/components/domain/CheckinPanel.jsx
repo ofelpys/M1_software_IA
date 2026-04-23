@@ -4,7 +4,6 @@ import { formatCpf, isCpfComplete } from '../../utils/cpf';
 
 export default function CheckinPanel() {
   const [cpf, setCpf] = useState('');
-  const [status, setStatus] = useState('ativo');
   const [feedback, setFeedback] = useState(null);
 
   const runCheckin = async () => {
@@ -13,7 +12,7 @@ export default function CheckinPanel() {
       return;
     }
 
-    const result = await checkinComFallback({ cpf, status });
+    const result = await checkinComFallback({ cpf });
     if (result.source === 'mock') {
       const detail = result.fallbackNotice ? `${result.fallbackNotice} ` : '';
       const simulatedText = result.type === 'success-box'
@@ -39,14 +38,6 @@ export default function CheckinPanel() {
             inputMode="numeric"
             maxLength={14}
           />
-        </label>
-        <label>
-          Status simulado
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="ativo">Ativo</option>
-            <option value="inadimplente">Inadimplente</option>
-            <option value="bloqueado">Bloqueado</option>
-          </select>
         </label>
         <button className="btn-primary" type="button" onClick={runCheckin}>
           Validar e registrar check-in
