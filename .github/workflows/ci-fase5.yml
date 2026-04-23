@@ -124,11 +124,12 @@ jobs:
 
       - name: Start backend (H2) in background
         env:
+          SPRING_PROFILES_ACTIVE: local
           DB_URL: jdbc:h2:mem:ci_db;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
           DB_USERNAME: sa
           DB_PASSWORD: ''
         run: |
-          nohup mvn -f backend/forca-total-api/pom.xml spring-boot:run > backend.log 2>&1 &
+          nohup mvn -f backend/forca-total-api/pom.xml spring-boot:run -Dspring-boot.run.profiles=local > backend.log 2>&1 &
 
       - name: Wait for backend health
         run: |
